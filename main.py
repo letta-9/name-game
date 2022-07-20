@@ -2,6 +2,7 @@
 
 import pygame, sys
 from button import Button
+import random
 
 
 # Initialize Game #-------------------------------------------------------------------------------------------------
@@ -50,30 +51,15 @@ def disp_type(ans):
 
 def disp_ans(ans):
     TEXT = press_start_font(28).render(ans, True, seafoam)
-    TEXT_RECT = TEXT.get_rect(center=(655, 200))
-    SCREEN.blit(TEXT, TEXT_RECT)
-
-# Display Answer TWO #------------------------------------------------------------------------------------------
-
-def disp_ans_two(ans):
-    TEXT = press_start_font(28).render(ans, True, seafoam)
     TEXT_RECT = TEXT.get_rect(center=(655, 400))
     SCREEN.blit(TEXT, TEXT_RECT)
 
+# Display First Random Letter #------------------------------------------------------------------------------------------
 
-# Display Answer THREE #------------------------------------------------------------------------------------------
-
-def disp_ans_three(ans):
-    TEXT = press_start_font(28).render(ans, True, seafoam)
-    TEXT_RECT = TEXT.get_rect(center=(655, 300))
-    SCREEN.blit(TEXT, TEXT_RECT)
-
-# Display Answer FOUR #------------------------------------------------------------------------------------------
-
-def disp_ans_four(ans):
-    TEXT = press_start_font(28).render(ans, True, seafoam)
-    TEXT_RECT = TEXT.get_rect(center=(655, 200))
-    SCREEN.blit(TEXT, TEXT_RECT)
+def disp_first_letter(letter):
+    FIRST_TEXT = press_start_font(100).render(letter, True, gray)
+    FIRST_RECT = FIRST_TEXT.get_rect(center=(655, 200))
+    SCREEN.blit(FIRST_TEXT, FIRST_RECT)
 
 
 # Main Menu Game Loop #---------------------------------------------------------------------------------------------
@@ -88,7 +74,7 @@ def main_menu():
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 175))
 
         PLAY_BUTTON = Button(image=pygame.transform.scale(gray_rect, (300, 100)), pos=(640, 350), 
-                            text_input="PLAY", font=press_start_font(50), base_color=seafoam, hovering_color=white)
+                            text_input="SINGLE PLAYER", font=press_start_font(20), base_color=seafoam, hovering_color=white)
         CONTACT_BUTTON = Button(image=pygame.transform.scale(gray_rect, (475, 100)), pos=(640, 475), 
                             text_input="CONTACT", font=press_start_font(50), base_color=seafoam, hovering_color=white)
         QUIT_BUTTON = Button(image=pygame.transform.scale(gray_rect, (300, 100)), pos=(640, 600), 
@@ -128,95 +114,95 @@ def play_cat():
         PLAY_RECT = PLAY_TEXT.get_rect(center=(640, 50))
         SCREEN.blit(PLAY_TEXT, PLAY_RECT)
 
-        SPORTS_TEXT = press_start_font(30).render("SPORTS", True, powder_blue)
-        SPORTS_RECT = PLAY_TEXT.get_rect(center=(715, 165))
-        SCREEN.blit(SPORTS_TEXT, SPORTS_RECT)
+        # SPORTS_TEXT = press_start_font(30).render("SPORTS", True, powder_blue)
+        # SPORTS_RECT = PLAY_TEXT.get_rect(center=(715, 165))
+        # SCREEN.blit(SPORTS_TEXT, SPORTS_RECT)
 
-        CELEBS_TEXT = press_start_font(30).render("CELEBS", True, powder_blue)
-        CELEBS_RECT = PLAY_TEXT.get_rect(center=(1150, 165))
-        SCREEN.blit(CELEBS_TEXT, CELEBS_RECT)
+        # CELEBS_TEXT = press_start_font(30).render("CELEBS", True, powder_blue)
+        # CELEBS_RECT = PLAY_TEXT.get_rect(center=(1150, 165))
+        # SCREEN.blit(CELEBS_TEXT, CELEBS_RECT)
 
         # Categories #
 
-        ATHLETES_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(426, 225), 
+        ATHLETES_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(645, 225), 
                             text_input="ALL ATHLETES", font=press_start_font(20), base_color=seafoam, hovering_color=white)
         ATHLETES_CAT.changeColor(PLAY_MOUSE_POS)
         ATHLETES_CAT.update(SCREEN)
 
-        BASEBALL_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(426, 285), 
+        BASEBALL_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(645, 285), 
                             text_input="BASEBALL", font=press_start_font(30), base_color=seafoam, hovering_color=white)
         BASEBALL_CAT.changeColor(PLAY_MOUSE_POS)
         BASEBALL_CAT.update(SCREEN)
 
-        BASKETBALL_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(426, 345), 
+        BASKETBALL_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(645, 345), 
                             text_input="BASKETBALL", font=press_start_font(24), base_color=seafoam, hovering_color=white)
         BASKETBALL_CAT.changeColor(PLAY_MOUSE_POS)
         BASKETBALL_CAT.update(SCREEN)
 
-        FOOTBALL_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(426, 405), 
+        FOOTBALL_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(645, 405), 
                             text_input="FOOTBALL", font=press_start_font(30), base_color=seafoam, hovering_color=white)
         FOOTBALL_CAT.changeColor(PLAY_MOUSE_POS)
         FOOTBALL_CAT.update(SCREEN)
 
-        HOCKEY_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(426, 465), 
+        HOCKEY_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(645, 465), 
                             text_input="HOCKEY", font=press_start_font(30), base_color=seafoam, hovering_color=white)
         HOCKEY_CAT.changeColor(PLAY_MOUSE_POS)
         HOCKEY_CAT.update(SCREEN)
 
-        SOCCER_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(426, 525), 
+        SOCCER_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(645, 525), 
                             text_input="SOCCER", font=press_start_font(30), base_color=seafoam, hovering_color=white)
         SOCCER_CAT.changeColor(PLAY_MOUSE_POS)
         SOCCER_CAT.update(SCREEN)
 
-        GOLF_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(426, 585), 
+        GOLF_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(645, 585), 
                             text_input="GOLF", font=press_start_font(30), base_color=seafoam, hovering_color=white)
         GOLF_CAT.changeColor(PLAY_MOUSE_POS)
         GOLF_CAT.update(SCREEN)
 
-        TENNIS_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(426, 645), 
+        TENNIS_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(645, 645), 
                             text_input="TENNIS", font=press_start_font(30), base_color=seafoam, hovering_color=white)
         TENNIS_CAT.changeColor(PLAY_MOUSE_POS)
         TENNIS_CAT.update(SCREEN)
 
-        ACTORS_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 225), 
-                            text_input="ACTORS/ACTRESSES", font=press_start_font(15), base_color=seafoam, hovering_color=white)
-        ACTORS_CAT.changeColor(PLAY_MOUSE_POS)
-        ACTORS_CAT.update(SCREEN)
+        # ACTORS_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 225), 
+        #                     text_input="ACTORS/ACTRESSES", font=press_start_font(15), base_color=seafoam, hovering_color=white)
+        # ACTORS_CAT.changeColor(PLAY_MOUSE_POS)
+        # ACTORS_CAT.update(SCREEN)
 
-        MUSICIANS_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 285), 
-                            text_input="MUSICIANS", font=press_start_font(26), base_color=seafoam, hovering_color=white)
-        MUSICIANS_CAT.changeColor(PLAY_MOUSE_POS)
-        MUSICIANS_CAT.update(SCREEN)
+        # MUSICIANS_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 285), 
+        #                     text_input="MUSICIANS", font=press_start_font(26), base_color=seafoam, hovering_color=white)
+        # MUSICIANS_CAT.changeColor(PLAY_MOUSE_POS)
+        # MUSICIANS_CAT.update(SCREEN)
 
-        MOVIE_CHAR_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 345), 
-                            text_input="MOVIE CHARACTERS", font=press_start_font(15), base_color=seafoam, hovering_color=white)
-        MOVIE_CHAR_CAT.changeColor(PLAY_MOUSE_POS)
-        MOVIE_CHAR_CAT.update(SCREEN)
+        # MOVIE_CHAR_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 345), 
+        #                     text_input="MOVIE CHARACTERS", font=press_start_font(15), base_color=seafoam, hovering_color=white)
+        # MOVIE_CHAR_CAT.changeColor(PLAY_MOUSE_POS)
+        # MOVIE_CHAR_CAT.update(SCREEN)
 
-        TV_CHAR_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 405), 
-                            text_input="TV CHARACTERS", font=press_start_font(18), base_color=seafoam, hovering_color=white)
-        TV_CHAR_CAT.changeColor(PLAY_MOUSE_POS)
-        TV_CHAR_CAT.update(SCREEN)
+        # TV_CHAR_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 405), 
+        #                     text_input="TV CHARACTERS", font=press_start_font(18), base_color=seafoam, hovering_color=white)
+        # TV_CHAR_CAT.changeColor(PLAY_MOUSE_POS)
+        # TV_CHAR_CAT.update(SCREEN)
 
-        HIST_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 465), 
-                            text_input="HISTORICAL FIGURES", font=press_start_font(13), base_color=seafoam, hovering_color=white)
-        HIST_CAT.changeColor(PLAY_MOUSE_POS)
-        HIST_CAT.update(SCREEN)
+        # HIST_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 465), 
+        #                     text_input="HISTORICAL FIGURES", font=press_start_font(13), base_color=seafoam, hovering_color=white)
+        # HIST_CAT.changeColor(PLAY_MOUSE_POS)
+        # HIST_CAT.update(SCREEN)
 
-        ART_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 525), 
-                            text_input="ARTISTS", font=press_start_font(30), base_color=seafoam, hovering_color=white)
-        ART_CAT.changeColor(PLAY_MOUSE_POS)
-        ART_CAT.update(SCREEN)
+        # ART_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 525), 
+        #                     text_input="ARTISTS", font=press_start_font(30), base_color=seafoam, hovering_color=white)
+        # ART_CAT.changeColor(PLAY_MOUSE_POS)
+        # ART_CAT.update(SCREEN)
 
-        AUTH_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 585), 
-                            text_input="AUTHORS", font=press_start_font(30), base_color=seafoam, hovering_color=white)
-        AUTH_CAT.changeColor(PLAY_MOUSE_POS)
-        AUTH_CAT.update(SCREEN)
+        # AUTH_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 585), 
+        #                     text_input="AUTHORS", font=press_start_font(30), base_color=seafoam, hovering_color=white)
+        # AUTH_CAT.changeColor(PLAY_MOUSE_POS)
+        # AUTH_CAT.update(SCREEN)
 
-        CEO_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 645), 
-                            text_input="CEOs", font=press_start_font(30), base_color=seafoam, hovering_color=white)
-        CEO_CAT.changeColor(PLAY_MOUSE_POS)
-        CEO_CAT.update(SCREEN)
+        # CEO_CAT = Button(image=pygame.transform.scale(gray_rect, (250, 50)), pos=(853, 645), 
+        #                     text_input="CEOs", font=press_start_font(30), base_color=seafoam, hovering_color=white)
+        # CEO_CAT.changeColor(PLAY_MOUSE_POS)
+        # CEO_CAT.update(SCREEN)
 
 
         PLAY_BACK = Button(image=pygame.transform.scale(gray_rect, (130, 50)), pos=(80, 50), 
@@ -282,6 +268,9 @@ def baseball():
     ANS_FIVE = ""
     TURN = 1
     TURN_STR = str(TURN)
+    alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+    random_start = random.choice(alphabet)
+    used_words = []
 
 
     while True:
@@ -293,6 +282,10 @@ def baseball():
         BASEBALL_RECT = BASEBALL_TEXT.get_rect(center=(640, 50))
         SCREEN.blit(BASEBALL_TEXT, BASEBALL_RECT)
 
+        LETTER_TEXT = press_start_font(20).render("NAME A BASEBALL PLAYER WHOSE NAME STARTS WITH:", True, gray)
+        LETTER_RECT = LETTER_TEXT.get_rect(center=(640, 100))
+        SCREEN.blit(LETTER_TEXT, LETTER_RECT)
+
   
         BASEBALL_BACK = Button(image=pygame.transform.scale(gray_rect, (130, 50)), pos=(80, 50), 
                         text_input="BACK", font=press_start_font(30), base_color=seafoam, hovering_color=white)
@@ -301,6 +294,8 @@ def baseball():
         BASEBALL_BACK.update(SCREEN)
 
         SCREEN.blit(input_bg, [250,550])
+
+        disp_first_letter(random_start)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -352,23 +347,8 @@ def baseball():
                     PLAYER_INPUT = PLAYER_INPUT[:-5]
                 if event.key == pygame.K_RETURN:
                     PLAYER_ANS = PLAYER_INPUT[:-6]
+                    used_words.append(PLAYER_ANS)
                     PLAYER_INPUT = ""
-                    # if TURN == 2:
-                    #     ANS_TWO = PLAYER_ANS
-                    #     PLAYER_ANS = PLAYER_INPUT[:-6]
-                    #     PLAYER_INPUT = ""
-                    # if len(ANS_TWO) > 0:
-                    #     ANS_THREE = ANS_TWO
-                    #     ANS_TWO = PLAYER_ANS
-                    #     PLAYER_ANS = PLAYER_INPUT[:-6]
-                    #     PLAYER_INPUT = ""
-                    # if len(ANS_THREE) > 0:
-                    #     ANS_FOUR = ANS_THREE
-                    #     ANS_THREE = ANS_TWO
-                    #     ANS_TWO = PLAYER_ANS
-                    #     PLAYER_ANS = PLAYER_INPUT[:-6]
-                    #     PLAYER_INPUT = ""
-                    # TURN += 1
 
 
 
