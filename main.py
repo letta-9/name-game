@@ -39,27 +39,44 @@ input_bg = pygame.image.load("input.png")
 def press_start_font(size):
     return pygame.font.Font("font.ttf", size)
 
+def arial(size):
+    return pygame.font.SysFont("arial", size)
 
-# Display Player Answer #-------------------------------------------------------------------------------------------
+
+# Display Player Actively Typing #-------------------------------------------------------------------------------------------
 
 def disp_type(ans):
     TEXT = press_start_font(28).render(ans, True, gray)
     TEXT_RECT = TEXT.get_rect(center=(655, 595))
     SCREEN.blit(TEXT, TEXT_RECT)
 
-# Display Player Answer #------------------------------------------------------------------------------------------
+# Display Player Submitted Answer #------------------------------------------------------------------------------------------
 
 def disp_ans(ans):
     TEXT = press_start_font(28).render(ans, True, seafoam)
     TEXT_RECT = TEXT.get_rect(center=(655, 400))
     SCREEN.blit(TEXT, TEXT_RECT)
 
+# Display Wrong Answer Text #------------------------------------------------------------------------------------------
+
+def wrong_ans():
+    TEXT = press_start_font(28).render("THAT ANSWER IS INCORRECT", True, red)
+    TEXT_RECT = TEXT.get_rect(center=(655, 400))
+    SCREEN.blit(TEXT, TEXT_RECT)
+
+
 # Display First Random Letter #------------------------------------------------------------------------------------------
 
-def disp_first_letter(letter):
-    FIRST_TEXT = press_start_font(100).render(letter, True, gray)
-    FIRST_RECT = FIRST_TEXT.get_rect(center=(655, 200))
-    SCREEN.blit(FIRST_TEXT, FIRST_RECT)
+def disp_play_letter(letter):
+    TEXT = press_start_font(100).render(letter, True, gray)
+    TEXT_RECT = TEXT.get_rect(center=(655, 200))
+    SCREEN.blit(TEXT, TEXT_RECT)
+
+# Hide First Letter #------------------------------------------------------------------------------------------
+
+def hide_prev_letter():
+    pygame.draw.rect(SCREEN, white, (605, 160, 150, 150))
+
 
 
 # Main Menu Game Loop #---------------------------------------------------------------------------------------------
@@ -74,7 +91,7 @@ def main_menu():
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 175))
 
         PLAY_BUTTON = Button(image=pygame.transform.scale(gray_rect, (300, 100)), pos=(640, 350), 
-                            text_input="SINGLE PLAYER", font=press_start_font(20), base_color=seafoam, hovering_color=white)
+                            text_input="PLAY", font=press_start_font(50), base_color=seafoam, hovering_color=white)
         CONTACT_BUTTON = Button(image=pygame.transform.scale(gray_rect, (475, 100)), pos=(640, 475), 
                             text_input="CONTACT", font=press_start_font(50), base_color=seafoam, hovering_color=white)
         QUIT_BUTTON = Button(image=pygame.transform.scale(gray_rect, (300, 100)), pos=(640, 600), 
@@ -262,15 +279,16 @@ def baseball():
 
     PLAYER_INPUT = ""
     PLAYER_ANS = ""
-    ANS_TWO = ""
-    ANS_THREE = ""
-    ANS_FOUR = ""
-    ANS_FIVE = ""
-    TURN = 1
-    TURN_STR = str(TURN)
+    CHECK_ANS = ""
+    TURN = 0
     alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
     random_start = random.choice(alphabet)
-    used_words = []
+    USED_WORDS = []
+
+    DISPLAY = ""
+
+
+
 
 
     while True:
@@ -295,7 +313,7 @@ def baseball():
 
         SCREEN.blit(input_bg, [250,550])
 
-        disp_first_letter(random_start)
+        disp_play_letter(random_start)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -346,20 +364,53 @@ def baseball():
                 if event.key == pygame.K_KP_ENTER:
                     PLAYER_INPUT = PLAYER_INPUT[:-5]
                 if event.key == pygame.K_RETURN:
-                    PLAYER_ANS = PLAYER_INPUT[:-6]
-                    used_words.append(PLAYER_ANS)
-                    PLAYER_INPUT = ""
+                    TURN += 1
+
+                    if TURN == 1:
+                        
+                        if PLAYER_INPUT[:-6][0] == random_start:
+
+                            CHECK_ANS = PLAYER_INPUT[:-6]
+
+                            name_break_index = CHECK_ANS.find(" ")
+                            play_letter_index = name_break_index + 1
+                            play_letter = CHECK_ANS[play_letter_index]
+
+                            USED_WORDS.append(CHECK_ANS)
+                            PLAYER_INPUT = ""
+                            DISPLAY = "correct"
+                        else:
+                            PLAYER_INPUT = ""                        
+                            DISPLAY = "incorrect"
+                            
+                    else:
+                        PLAYER_ANS = PLAYER_INPUT[:-6]
+                        if PLAYER_ANS[0] == play_letter:
+
+                            CHECK_ANS = PLAYER_ANS
+
+                            name_break_index = CHECK_ANS.find(" ")
+                            play_letter_index = name_break_index + 1
+                            play_letter = CHECK_ANS[play_letter_index]
+
+                            USED_WORDS.append(CHECK_ANS)
+                            PLAYER_INPUT = ""
+                            DISPLAY = "correct"                            
+                        else:
+                            PLAYER_INPUT = ""
+                            DISPLAY = "incorrect"
+                            
 
 
-
-        disp_ans(PLAYER_ANS)                
+        if DISPLAY == "correct":
+            disp_ans(CHECK_ANS)
+            hide_prev_letter()
+            disp_play_letter(play_letter)
+        elif DISPLAY == "incorrect":
+            wrong_ans()
+                    
+               
         disp_type(PLAYER_INPUT)
-        
-        # disp_ans_two(ANS_TWO)
-        # disp_ans_three(ANS_THREE)
-        # disp_ans_four(ANS_FOUR)
-                                
-
             
 
         pygame.display.update()
