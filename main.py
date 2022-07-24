@@ -1,7 +1,7 @@
 # TO-DO #----------------------------------------------------------------------------------------------------------
 
 # Eliminate duplicate answers
-# Lives/Hearts
+# Hearts
 # Timer
 # Scoring System (adding style points for double woubles & same first and last name, double streak)
 # Lose/Restart menu
@@ -10,6 +10,7 @@
 # No Letter U in baseball
 # take out less frequent letters for the start
 # fix alignment of all rects
+# Game over window
 
 
 
@@ -78,6 +79,13 @@ def wrong_ans():
     TEXT_RECT = TEXT.get_rect(center=(655, 400))
     SCREEN.blit(TEXT, TEXT_RECT)
 
+# Display Dupe Text Func #------------------------------------------------------------------------------------------
+
+def dupe_ans():
+    TEXT = press_start_font(22).render("THAT NAME HAS ALREADY BEEN USED. TRY AGAIN", True, RED)
+    TEXT_RECT = TEXT.get_rect(center=(655, 400))
+    SCREEN.blit(TEXT, TEXT_RECT)
+
 
 # Display First Random Letter Func #------------------------------------------------------------------------------------------
 
@@ -93,12 +101,27 @@ def hide_prev_letter():
 
 # Display Score Func #------------------------------------------------------------------------------------------
 
-def disp_score(score):
+def disp_score(score, x, y):
     score = str(score)
-    TEXT = press_start_font(30).render("SCORE:" + score, True, GRAY)
-    TEXT_RECT = TEXT.get_rect(center=(1100, 50))
+    TEXT = press_start_font(30).render("SCORE:" + score, True, POWDER_BLUE)
+    TEXT_RECT = TEXT.get_rect(center=(x, y))
     SCREEN.blit(TEXT, TEXT_RECT)
 
+# Display Timer #-----------------------------------------------------------------------------------------------------
+
+def disp_timer():
+    ten = "10"
+    TEXT = press_start_font(30).render(ten, True, GRAY)
+    TEXT_RECT = TEXT.get_rect(center=(1100, 600))
+    SCREEN.blit(TEXT, TEXT_RECT)
+
+# Display Lives #-----------------------------------------------------------------------------------------------------
+
+def disp_lives(lives):
+    lives = str(lives)
+    TEXT = press_start_font(30).render("LIVES:" + lives, True, POWDER_BLUE)
+    TEXT_RECT = TEXT.get_rect(center=(1100, 350))
+    SCREEN.blit(TEXT, TEXT_RECT)
 
 
 # Main Menu Game Loop #---------------------------------------------------------------------------------------------
@@ -249,6 +272,7 @@ def contact():
 
         pygame.display.update()
 
+# Baseball Rules Window #-------------------------------------------------------------------------------------------
 
 def baseball_rules():
     while True:
@@ -279,26 +303,36 @@ def baseball_rules():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if BASEBALL_RULES_BACK.checkForInput(BASEBALL_RULES_MOUSE_POS):
-                    main_menu()
+                    play_cat()
                 if BASEBALL_RULES_PLAY.checkForInput(BASEBALL_RULES_MOUSE_POS):
                     baseball()
 
         pygame.display.update()
 
+
+
 # Baseball Page Game Loop #
+
 def baseball():
 
     PLAYER_INPUT = ""
-    PLAYER_ANS = ""
     CHECK_ANS = ""
     SCORE = 0
+    LIVES = 3
     ALPHABET = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
     RANDOM_START = random.choice(ALPHABET)
-    USED_WORDS = []
+    USED_NAMES = []
     DISPLAY = ""
     BASEBALL_LIST = pd.read_csv('baseball_list_py.csv')
 
     while True:
+        # time = pygame.time.get_ticks()
+        # time_str = str(time)
+
+        # TIME_TEXT = press_start_font(45).render(time_str, True, GRAY)
+        # TIME_RECT = TIME_TEXT.get_rect(center=(600, 350))
+        # SCREEN.blit(TIME_TEXT, TIME_RECT)
+
         BASEBALL_MOUSE_POS = pygame.mouse.get_pos()
         
         SCREEN.fill(WHITE)
@@ -380,35 +414,40 @@ def baseball():
                             CHECK_ANS = PLAYER_INPUT[:-6]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
-                            USED_WORDS.append(CHECK_ANS)
+                            USED_NAMES.append(CHECK_ANS)
 
                             NAME_BREAK_INDEX = CHECK_ANS.find(" ")
                             PLAY_LETTER_INDEX = NAME_BREAK_INDEX + 1
                             PLAY_LETTER = CHECK_ANS[PLAY_LETTER_INDEX]
 
-                            SCORE += 100
-
+                            SCORE += 100                           
                         else:
                             PLAYER_INPUT = ""                        
                             DISPLAY = "incorrect"
+                            LIVES -= 1
                             
                     elif SCORE > 0 and len(PLAYER_INPUT) > 6:
-                        if PLAYER_INPUT[:-6][0] == PLAY_LETTER and BASEBALL_LIST['Name'].str.contains(PLAYER_INPUT[:-6]).any():
+                        if PLAYER_INPUT[:-6] in USED_NAMES:
+                            PLAYER_INPUT = ""                        
+                            DISPLAY = "dupe"
+                        elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and BASEBALL_LIST['Name'].str.contains(PLAYER_INPUT[:-6]).any():
 
                             CHECK_ANS = PLAYER_INPUT[:-6]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"  
-                            USED_WORDS.append(CHECK_ANS)
+                            USED_NAMES.append(CHECK_ANS)
 
                             NAME_BREAK_INDEX = CHECK_ANS.find(" ")
                             PLAY_LETTER_INDEX = NAME_BREAK_INDEX + 1
                             PLAY_LETTER = CHECK_ANS[PLAY_LETTER_INDEX]
 
                             SCORE += 100
-
                         else:
                             DISPLAY = "incorrect"
                             PLAYER_INPUT = ""
+                            LIVES -= 1
+                    
+                        
                             
                             
         # Change display whether the answer is correct or incorrect #
@@ -417,6 +456,13 @@ def baseball():
             disp_ans(CHECK_ANS)
             hide_prev_letter()
             disp_play_letter(PLAY_LETTER)
+        elif DISPLAY == "dupe":
+            dupe_ans()
+            hide_prev_letter()
+            if SCORE == 0:
+                disp_play_letter(RANDOM_START)
+            else:
+                disp_play_letter(PLAY_LETTER)
         elif DISPLAY == "incorrect":
             wrong_ans()
             hide_prev_letter()
@@ -428,13 +474,56 @@ def baseball():
         # Call Functions to display elements that are always on the screen #            
                
         disp_type(PLAYER_INPUT)
-        disp_score(SCORE)
-            
+        disp_score(SCORE, 150, 350)
+        disp_lives(LIVES)
+
+        # Game Over Page #
+        def game_over():
+            while True:
+                GAME_OVER_MOUSE_POS = pygame.mouse.get_pos()
+
+                SCREEN.fill(WHITE)
+
+                pygame.draw.rect(SCREEN, GRAY, (390, 110, 500, 500))
+
+                GAME_OVER_TEXT = press_start_font(30).render("GAME OVER", True, POWDER_BLUE)
+                GAME_OVER_RECT = GAME_OVER_TEXT.get_rect(center=(640, 150))
+                SCREEN.blit(GAME_OVER_TEXT, GAME_OVER_RECT)
+
+                disp_score(SCORE, 640, 200)
+
+                PLAY_AGAIN = Button(None, pos=(640, 535), 
+                                text_input="PLAY AGAIN", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+                PLAY_AGAIN.changeColor(GAME_OVER_MOUSE_POS)
+                PLAY_AGAIN.update(SCREEN)
+
+                GAME_OVER_HOME = Button(image=pygame.transform.scale(GRAY_RECT, (130, 50)), pos=(80, 50), 
+                                text_input="HOME", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+
+                GAME_OVER_HOME.changeColor(GAME_OVER_MOUSE_POS)
+                GAME_OVER_HOME.update(SCREEN)
+
+                
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if GAME_OVER_HOME.checkForInput(GAME_OVER_MOUSE_POS):
+                            main_menu()
+                        if PLAY_AGAIN.checkForInput(GAME_OVER_MOUSE_POS):
+                            baseball()
+
+                pygame.display.update()     
+
+        if LIVES == 0:
+            game_over()
 
         pygame.display.update()
                 
-
-
 # Start the Game #--------------------------------------------------------------------------------------------------
+
+
 
 main_menu()
