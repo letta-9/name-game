@@ -122,6 +122,15 @@ def disp_lives(lives):
     TEXT_RECT = TEXT.get_rect(center=(1100, 350))
     SCREEN.blit(TEXT, TEXT_RECT)
 
+# Display Double Streak #-----------------------------------------------------------------------------------------------------
+
+def disp_streak(streak):
+    streak = str(streak)
+    TEXT = press_start_font(30).render("STREAK x" + streak, True, RED)
+    TEXT_RECT = TEXT.get_rect(center=(150, 450))
+    SCREEN.blit(TEXT, TEXT_RECT)
+
+
 
 # Main Menu Game Loop #---------------------------------------------------------------------------------------------
 
@@ -311,7 +320,6 @@ def baseball_rules():
 # Baseball Page Game Loop #
 
 def baseball():
-
     PLAYER_INPUT = ""
     CHECK_ANS = ""
     SCORE = 0
@@ -321,6 +329,8 @@ def baseball():
     USED_NAMES = []
     DISPLAY = ""
     BASEBALL_LIST = pd.read_csv('baseball_list_py.csv')
+    TURNS = 0
+    DOUBLE_STREAK = 0
 
 
     while True:
@@ -406,11 +416,10 @@ def baseball():
                 if event.key == pygame.K_KP_ENTER:
                     PLAYER_INPUT = PLAYER_INPUT[:-5]
                 if event.key == pygame.K_RETURN:        
-
                     if SCORE == 0 and len(PLAYER_INPUT) > 6:
                         if PLAYER_INPUT[:-6][0] == RANDOM_START and BASEBALL_LIST['Name'].eq(PLAYER_INPUT[:-6]).any():
                             CHECK_ANS = PLAYER_INPUT[:-6]
-                            DOUBLE_CHECK = PLAYER_INPUT[0]
+                            FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
                             USED_NAMES.append(CHECK_ANS)
@@ -418,12 +427,20 @@ def baseball():
                             NAME_BREAK_INDEX = CHECK_ANS.find(" ")
                             PLAY_LETTER_INDEX = NAME_BREAK_INDEX + 1
                             PLAY_LETTER = CHECK_ANS[PLAY_LETTER_INDEX]
+                            
+                            TURNS += 1
 
-                            if DOUBLE_CHECK == PLAY_LETTER:
+                            if FIRST_LETTER == PLAY_LETTER:
                                 SCORE += 200
+                                DOUBLE_STREAK += 1
                             else:
                                 SCORE += 100
-                      
+                                DOUBLE_STREAK = 0
+
+                            if DOUBLE_STREAK > 1:
+                                BONUS = (DOUBLE_STREAK - 1) * 100
+                                SCORE += BONUS
+                                DISPLAY = "streak"
                         else:
                             PLAYER_INPUT = ""                        
                             DISPLAY = "incorrect"
@@ -436,7 +453,7 @@ def baseball():
                         elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and BASEBALL_LIST['Name'].eq(PLAYER_INPUT[:-6]).any():
 
                             CHECK_ANS = PLAYER_INPUT[:-6]
-                            DOUBLE_CHECK = PLAYER_INPUT[0]
+                            FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"  
                             USED_NAMES.append(CHECK_ANS)
@@ -444,19 +461,28 @@ def baseball():
                             NAME_BREAK_INDEX = CHECK_ANS.find(" ")
                             PLAY_LETTER_INDEX = NAME_BREAK_INDEX + 1
                             PLAY_LETTER = CHECK_ANS[PLAY_LETTER_INDEX]
+			    
+                            TURNS += 1
 
-                            if DOUBLE_CHECK == PLAY_LETTER:
+                            if FIRST_LETTER == PLAY_LETTER:
                                 SCORE += 200
+                                DOUBLE_STREAK += 1
                             else:
                                 SCORE += 100
+                                DOUBLE_STREAK = 0
+
+                            if DOUBLE_STREAK > 1:
+                                BONUS = (DOUBLE_STREAK - 1) * 100
+                                SCORE += BONUS
+                                DISPLAY = "streak"
+                            
                         else:
                             DISPLAY = "incorrect"
                             PLAYER_INPUT = ""
                             LIVES -= 1
                     
                         
-                            
-                            
+                          
         # Change display whether the answer is correct or incorrect #
 
         if DISPLAY == "correct":
@@ -477,6 +503,11 @@ def baseball():
                 disp_play_letter(RANDOM_START)
             else:
                 disp_play_letter(PLAY_LETTER)
+        elif DISPLAY == "streak":
+            disp_streak(DOUBLE_STREAK)
+            disp_ans(CHECK_ANS)
+            hide_prev_letter()
+            disp_play_letter(PLAY_LETTER)
         
         # Call Functions to display elements that are always on the screen #            
                
