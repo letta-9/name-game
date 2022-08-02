@@ -14,6 +14,7 @@
 
 
 # Import Modules #--------------------------------------------------------------------------------------------------
+import webbrowser
 import pygame, sys
 from button import Button
 import random
@@ -45,7 +46,8 @@ GRAY = (121, 118, 119)
 # Import Images #----------------------------------------------------------------------------------------------------------
 
 GRAY_RECT = pygame.image.load("GRAY Rect.png")
-INPUT_BG = pygame.image.load("input.png") 
+INPUT_BG = pygame.image.load("input.png")
+TWITTER = pygame.image.load("twitter.png")
 
 
 # Define Font Functions Func #-----------------------------------------------------------------------------------------------------------
@@ -256,13 +258,17 @@ def contact():
 
         SCREEN.fill(WHITE)
 
-        CONTACT_TEXT = press_start_font(45).render("CREATED BY MATT BARLETTA", True, POWDER_BLUE)
+        CONTACT_TEXT = press_start_font(30).render("CREATED BY MATT BARLETTA", True, POWDER_BLUE)
         CONTACT_RECT = CONTACT_TEXT.get_rect(center=(640, 260))
         SCREEN.blit(CONTACT_TEXT, CONTACT_RECT)
 
         EMAIL_TEXT = press_start_font(30).render("CONTACT AT MATTBARLETTA7@GMAIL.COM", True, POWDER_BLUE)
         EMAIL_RECT = EMAIL_TEXT.get_rect(center=(640, 320))
         SCREEN.blit(EMAIL_TEXT, EMAIL_RECT)
+
+        DONATE_TEXT = press_start_font(30).render("DONATE VENMO @BARLETTA8413", True, POWDER_BLUE)
+        DONATE_RECT = DONATE_TEXT.get_rect(center=(640, 380))
+        SCREEN.blit(DONATE_TEXT, DONATE_RECT)        
 
         CONTACT_BACK = Button(image=pygame.transform.scale(GRAY_RECT, (130, 50)), pos=(80, 50), 
                             text_input="BACK", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
@@ -548,6 +554,10 @@ def baseball():
                 GAME_OVER_HOME.changeColor(GAME_OVER_MOUSE_POS)
                 GAME_OVER_HOME.update(SCREEN)
 
+                TWIT_BUT = Button(image=pygame.transform.scale(TWITTER, (100, 50)), pos=(850, 570), 
+                                text_input="", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+                TWIT_BUT.update(SCREEN)
+
                 
 
                 for event in pygame.event.get():
@@ -559,6 +569,9 @@ def baseball():
                             main_menu()
                         if PLAY_AGAIN.checkForInput(GAME_OVER_MOUSE_POS):
                             baseball()
+                        if TWIT_BUT.checkForInput(GAME_OVER_MOUSE_POS):
+                            webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20Baseball%20Players%20For%20{SCORE}%20Points%20")
+
                     if event.type == pygame.KEYDOWN:
                         char_int = pygame.key.name(event.key)
                         INITIALS += char_int
