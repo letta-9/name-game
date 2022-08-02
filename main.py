@@ -189,45 +189,45 @@ def play_cat():
 
         # Category Buttons #
 
-        ATHLETES_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 225), 
-                            text_input="ALL ATHLETES", font=press_start_font(20), base_color=SEAFOAM, hovering_color=WHITE)
-        ATHLETES_CAT.changeColor(PLAY_MOUSE_POS)
-        ATHLETES_CAT.update(SCREEN)
+        MOVIES_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 285), 
+                            text_input="ACTORS/ACTRESSES", font=press_start_font(15), base_color=SEAFOAM, hovering_color=WHITE)
+        MOVIES_CAT.changeColor(PLAY_MOUSE_POS)
+        MOVIES_CAT.update(SCREEN)
 
-        BASEBALL_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 285), 
-                            text_input="MLB'22", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+        BASEBALL_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 225), 
+                            text_input="BASEBALL", font=press_start_font(25), base_color=SEAFOAM, hovering_color=WHITE)
         BASEBALL_CAT.changeColor(PLAY_MOUSE_POS)
         BASEBALL_CAT.update(SCREEN)
 
-        BASKETBALL_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 345), 
-                            text_input="NBA'21-'22", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
-        BASKETBALL_CAT.changeColor(PLAY_MOUSE_POS)
-        BASKETBALL_CAT.update(SCREEN)
+        MUSICIANS = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 345), 
+                            text_input="MUSICIANS", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
+        MUSICIANS.changeColor(PLAY_MOUSE_POS)
+        MUSICIANS.update(SCREEN)
 
-        FOOTBALL_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 405), 
-                            text_input="NFL'21-'22", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
-        FOOTBALL_CAT.changeColor(PLAY_MOUSE_POS)
-        FOOTBALL_CAT.update(SCREEN)
+        # FOOTBALL_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 405), 
+        #                     text_input="NFL'21-'22", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
+        # FOOTBALL_CAT.changeColor(PLAY_MOUSE_POS)
+        # FOOTBALL_CAT.update(SCREEN)
 
-        HOCKEY_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 465), 
-                            text_input="NHL'21-'22", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
-        HOCKEY_CAT.changeColor(PLAY_MOUSE_POS)
-        HOCKEY_CAT.update(SCREEN)
+        # HOCKEY_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 465), 
+        #                     text_input="NHL'21-'22", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
+        # HOCKEY_CAT.changeColor(PLAY_MOUSE_POS)
+        # HOCKEY_CAT.update(SCREEN)
 
-        SOCCER_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 525), 
-                            text_input="MLS'22", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
-        SOCCER_CAT.changeColor(PLAY_MOUSE_POS)
-        SOCCER_CAT.update(SCREEN)
+        # SOCCER_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 525), 
+        #                     text_input="MLS'22", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+        # SOCCER_CAT.changeColor(PLAY_MOUSE_POS)
+        # SOCCER_CAT.update(SCREEN)
 
-        GOLF_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 585), 
-                            text_input="GOLF", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
-        GOLF_CAT.changeColor(PLAY_MOUSE_POS)
-        GOLF_CAT.update(SCREEN)
+        # GOLF_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 585), 
+        #                     text_input="GOLF", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+        # GOLF_CAT.changeColor(PLAY_MOUSE_POS)
+        # GOLF_CAT.update(SCREEN)
 
-        TENNIS_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 645), 
-                            text_input="TENNIS", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
-        TENNIS_CAT.changeColor(PLAY_MOUSE_POS)
-        TENNIS_CAT.update(SCREEN)
+        # TENNIS_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 645), 
+        #                     text_input="TENNIS", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+        # TENNIS_CAT.changeColor(PLAY_MOUSE_POS)
+        # TENNIS_CAT.update(SCREEN)
 
         # Back Button #
 
@@ -570,7 +570,7 @@ def baseball():
                         if PLAY_AGAIN.checkForInput(GAME_OVER_MOUSE_POS):
                             baseball()
                         if TWIT_BUT.checkForInput(GAME_OVER_MOUSE_POS):
-                            webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20Baseball%20Players%20For%20{SCORE}%20Points%20")
+                            webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20Baseball%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Flettasports.com")
 
                     if event.type == pygame.KEYDOWN:
                         char_int = pygame.key.name(event.key)
