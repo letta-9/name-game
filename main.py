@@ -48,7 +48,7 @@ GRAY = (121, 118, 119)
 GRAY_RECT = pygame.image.load("GRAY Rect.png")
 INPUT_BG = pygame.image.load("input.png")
 TWITTER = pygame.image.load("twitter.png")
-
+BASEBALL_RULES = pygame.transform.scale(pygame.image.load("baseball_rules.png"), (400, 350))
 
 # Define Font Functions Func #-----------------------------------------------------------------------------------------------------------
 
@@ -128,7 +128,7 @@ def disp_lives(lives):
 
 def disp_streak(streak):
     streak = str(streak)
-    TEXT = press_start_font(30).render("STREAK x" + streak, True, RED)
+    TEXT = press_start_font(20).render("DOUBLE STREAK x" + streak, True, RED)
     TEXT_RECT = TEXT.get_rect(center=(150, 450))
     SCREEN.blit(TEXT, TEXT_RECT)
 
@@ -300,7 +300,7 @@ def baseball_rules():
         RULES_RECT = RULES_TEXT.get_rect(center=(640, 150))
         SCREEN.blit(RULES_TEXT, RULES_RECT)
 
-        BASEBALL_RULES_PLAY = Button(None, pos=(640, 535), 
+        BASEBALL_RULES_PLAY = Button(None, pos=(640, 555), 
                         text_input="PLAY", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
         BASEBALL_RULES_PLAY.changeColor(BASEBALL_RULES_MOUSE_POS)
         BASEBALL_RULES_PLAY.update(SCREEN)
@@ -310,6 +310,9 @@ def baseball_rules():
 
         BASEBALL_RULES_BACK.changeColor(BASEBALL_RULES_MOUSE_POS)
         BASEBALL_RULES_BACK.update(SCREEN)
+
+        RULES_BODY = BASEBALL_RULES.get_rect(center=(640,350))
+        SCREEN.blit(BASEBALL_RULES, RULES_BODY)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
