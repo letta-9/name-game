@@ -1,19 +1,5 @@
-# TO-DO #----------------------------------------------------------------------------------------------------------
-
-# Hearts
-# Timer
-# Scoring System (adding style points for double woubles & same first and last name, double streak)
-# Lose/Restart menu
-# Save high score
-# Rules paragraph text
-# No Letter U in baseball
-# take out less frequent letters for the start
-# fix alignment of all rects
-# Game over window
-
-
-
 # Import Modules #--------------------------------------------------------------------------------------------------
+
 import webbrowser
 import pygame, sys
 from button import Button
@@ -25,6 +11,10 @@ import pandas as pd
 pygame.init()
 SCREEN = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Name Game")
+
+CLOCK = pygame.time.Clock()
+TOTAL_TIME = 0
+START_TIME = 0
 
 
 # Add Colors As Constants #----------------------------------------------------------------------------------------------------------
@@ -42,12 +32,25 @@ SEAFOAM = (215, 252, 212)
 POWDER_BLUE = (182, 208, 226)
 GRAY = (121, 118, 119)
 
+# Add numbers as strings for countdown #
+
+TEN = "10"
+NINE = "9"
+EIGHT = "8"
+SEVEN = "7"
+SIX = "6"
+FIVE = "5"
+FOUR = "4"
+THREE = "3"
+TWO = "2"
+ONE = "1"
 
 # Import Images #----------------------------------------------------------------------------------------------------------
 
 GRAY_RECT = pygame.image.load("GRAY Rect.png")
 INPUT_BG = pygame.image.load("input.png")
 TWITTER = pygame.image.load("twitter.png")
+HEART = pygame.transform.scale(pygame.image.load("heart.png"), (100, 100))
 BASEBALL_RULES = pygame.transform.scale(pygame.image.load("baseball_rules.png"), (400, 350))
 
 # Define Font Functions Func #-----------------------------------------------------------------------------------------------------------
@@ -69,29 +72,40 @@ def disp_type(ans, color, x, y):
 # Display Player Submitted Answer Func #------------------------------------------------------------------------------------------
 
 def disp_ans(ans):
-    TEXT = press_start_font(28).render(ans, True, SEAFOAM)
-    TEXT_RECT = TEXT.get_rect(center=(655, 400))
+    TEXT = press_start_font(28).render(ans, True, GREEN)
+    TEXT_RECT = TEXT.get_rect(center=(655, 500))
     SCREEN.blit(TEXT, TEXT_RECT)
 
 # Display Wrong Answer Text Func #------------------------------------------------------------------------------------------
 
 def wrong_ans():
     TEXT = press_start_font(28).render("THAT ANSWER IS INCORRECT", True, RED)
-    TEXT_RECT = TEXT.get_rect(center=(655, 400))
+    TEXT_RECT = TEXT.get_rect(center=(655, 500))
     SCREEN.blit(TEXT, TEXT_RECT)
 
 # Display Dupe Text Func #------------------------------------------------------------------------------------------
 
 def dupe_ans():
     TEXT = press_start_font(22).render("THAT NAME HAS ALREADY BEEN USED. TRY AGAIN", True, RED)
-    TEXT_RECT = TEXT.get_rect(center=(655, 400))
+    TEXT_RECT = TEXT.get_rect(center=(655, 500))
     SCREEN.blit(TEXT, TEXT_RECT)
 
+# Display Text when time runs out #---------------------------------------------------------------------------------------------------
+
+def no_time_1():
+    TEXT = press_start_font(28).render("OUT OF TIME. 2 LIVES LEFT", True, RED)
+    TEXT_RECT = TEXT.get_rect(center=(655, 500))
+    SCREEN.blit(TEXT, TEXT_RECT)
+
+def no_time_2():
+    TEXT = press_start_font(28).render("OUT OF TIME. 1 LIFE LEFT", True, RED)
+    TEXT_RECT = TEXT.get_rect(center=(655, 500))
+    SCREEN.blit(TEXT, TEXT_RECT)
 
 # Display First Random Letter Func #------------------------------------------------------------------------------------------
 
 def disp_play_letter(letter):
-    TEXT = press_start_font(100).render(letter, True, GRAY)
+    TEXT = press_start_font(100).render(letter, True, POWDER_BLUE)
     TEXT_RECT = TEXT.get_rect(center=(655, 200))
     SCREEN.blit(TEXT, TEXT_RECT)
 
@@ -110,28 +124,32 @@ def disp_score(score, x, y):
 
 # Display Timer #-----------------------------------------------------------------------------------------------------
 
-def disp_timer():
-    ten = "10"
-    TEXT = press_start_font(30).render(ten, True, GRAY)
-    TEXT_RECT = TEXT.get_rect(center=(1100, 600))
+def disp_timer(num,color):
+    TEXT = press_start_font(60).render(num, True, color)
+    TEXT_RECT = TEXT.get_rect(center=(655, 360))
     SCREEN.blit(TEXT, TEXT_RECT)
 
 # Display Lives #-----------------------------------------------------------------------------------------------------
 
-def disp_lives(lives):
+def disp_lives(lives, color):
     lives = str(lives)
-    TEXT = press_start_font(30).render("LIVES:" + lives, True, POWDER_BLUE)
+    TEXT = press_start_font(30).render("LIVES:" + lives, True, color)
     TEXT_RECT = TEXT.get_rect(center=(1100, 350))
     SCREEN.blit(TEXT, TEXT_RECT)
+
+# Hide Hearts #
+
+def hide_hearts(x, y, l, h):
+    pygame.draw.rect(SCREEN, WHITE, (x, y, l, h))
+
 
 # Display Double Streak #-----------------------------------------------------------------------------------------------------
 
 def disp_streak(streak):
     streak = str(streak)
-    TEXT = press_start_font(20).render("DOUBLE STREAK x" + streak, True, RED)
+    TEXT = press_start_font(20).render("DOUBLE STREAK x" + streak, True, GREEN)
     TEXT_RECT = TEXT.get_rect(center=(150, 450))
     SCREEN.blit(TEXT, TEXT_RECT)
-
 
 
 # Main Menu Game Loop #---------------------------------------------------------------------------------------------
@@ -173,6 +191,7 @@ def main_menu():
                     sys.exit()
 
         pygame.display.update()
+
 
 
 # Category Screen Game Loop #-------------------------------------------------------------------------------------------
@@ -329,6 +348,7 @@ def baseball_rules():
 # Baseball Page Game Loop #
 
 def baseball():
+    START_TIME = pygame.time.get_ticks()
     PLAYER_INPUT = ""
     CHECK_ANS = ""
     SCORE = 0
@@ -343,19 +363,12 @@ def baseball():
 
 
     while True:
-        # time = pygame.time.get_ticks()
-        # time_str = str(time)
-
-        # TIME_TEXT = press_start_font(45).render(time_str, True, GRAY)
-        # TIME_RECT = TIME_TEXT.get_rect(center=(600, 350))
-        # SCREEN.blit(TIME_TEXT, TIME_RECT)
-
         BASEBALL_MOUSE_POS = pygame.mouse.get_pos()
         
         SCREEN.fill(WHITE)
 
         BASEBALL_TEXT = press_start_font(45).render("BASEBALL", True, POWDER_BLUE)
-        BASEBALL_RECT = BASEBALL_TEXT.get_rect(center=(640, 50))
+        BASEBALL_RECT = BASEBALL_TEXT.get_rect(center=(655, 50))
         SCREEN.blit(BASEBALL_TEXT, BASEBALL_RECT)
 
         LETTER_TEXT = press_start_font(20).render("NAME A BASEBALL PLAYER WHOSE NAME STARTS WITH:", True, GRAY)
@@ -371,7 +384,39 @@ def baseball():
 
         SCREEN.blit(INPUT_BG, [250,550])
 
+        SCREEN.blit(HEART, [1020, 300])
+        SCREEN.blit(HEART, [1070, 300])
+        SCREEN.blit(HEART, [1120, 300])
+        
         disp_play_letter(RANDOM_START)
+
+        TOTAL_TIME = pygame.time.get_ticks()
+
+        if TOTAL_TIME - START_TIME > 10000:
+            DISPLAY = "out of time"
+            START_TIME = TOTAL_TIME
+            LIVES -= 1
+
+        if 1000 > TOTAL_TIME - START_TIME > 0:
+            disp_timer(TEN, GRAY)
+        elif 2000 > TOTAL_TIME - START_TIME > 1000:
+            disp_timer(NINE, GRAY)
+        elif 3000 > TOTAL_TIME - START_TIME > 2000:
+            disp_timer(EIGHT, GRAY)
+        elif 4000 > TOTAL_TIME - START_TIME > 3000:
+            disp_timer(SEVEN, GRAY)
+        elif 5000 > TOTAL_TIME - START_TIME > 4000:
+            disp_timer(SIX, GRAY)
+        elif 6000 > TOTAL_TIME - START_TIME > 5000:
+            disp_timer(FIVE, GRAY)
+        elif 7000 > TOTAL_TIME - START_TIME > 6000:
+            disp_timer(FOUR, GRAY)
+        elif 8000 > TOTAL_TIME - START_TIME > 7000:
+            disp_timer(THREE, RED)
+        elif 9000 > TOTAL_TIME - START_TIME > 8000:
+            disp_timer(TWO, RED)
+        elif 10000 > TOTAL_TIME - START_TIME > 9000:
+            disp_timer(ONE, RED)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -424,7 +469,9 @@ def baseball():
                     PLAYER_INPUT = PLAYER_INPUT[:-7]
                 if event.key == pygame.K_KP_ENTER:
                     PLAYER_INPUT = PLAYER_INPUT[:-5]
-                if event.key == pygame.K_RETURN:        
+                if event.key == pygame.K_RETURN:   
+                    START_TIME = TOTAL_TIME
+
                     if SCORE == 0 and len(PLAYER_INPUT) > 6:
                         if PLAYER_INPUT[:-6][0] == RANDOM_START and BASEBALL_LIST['Name'].eq(PLAYER_INPUT[:-6]).any():
                             CHECK_ANS = PLAYER_INPUT[:-6]
@@ -493,7 +540,6 @@ def baseball():
                         
                           
         # Change display whether the answer is correct or incorrect #
-
         if DISPLAY == "correct":
             disp_ans(CHECK_ANS)
             hide_prev_letter()
@@ -512,6 +558,18 @@ def baseball():
                 disp_play_letter(RANDOM_START)
             else:
                 disp_play_letter(PLAY_LETTER)
+        elif DISPLAY == "out of time":
+            if LIVES == 2:
+                no_time_1()
+                hide_prev_letter()
+            elif LIVES == 1:
+                no_time_2()
+                hide_prev_letter()
+
+            if SCORE == 0:
+                disp_play_letter(RANDOM_START)
+            else:
+                disp_play_letter(PLAY_LETTER)
         elif DISPLAY == "streak":
             disp_streak(DOUBLE_STREAK)
             disp_ans(CHECK_ANS)
@@ -522,7 +580,10 @@ def baseball():
                
         disp_type(PLAYER_INPUT, GRAY, 655, 595)
         disp_score(SCORE, 150, 350)
-        disp_lives(LIVES)
+        if LIVES == 2:
+            hide_hearts(975, 325, 120, 50)
+        elif LIVES == 1:
+            hide_hearts(975, 325, 170, 50)
 
         # Game Over Page #
         def game_over():
@@ -637,9 +698,11 @@ def baseball():
             game_over()
 
         pygame.display.update()
+        
                 
 # Start the Game #--------------------------------------------------------------------------------------------------
 
 
+CLOCK.tick(60)
 
 main_menu()
