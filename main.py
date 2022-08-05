@@ -32,18 +32,6 @@ SEAFOAM = (215, 252, 212)
 POWDER_BLUE = (182, 208, 226)
 GRAY = (121, 118, 119)
 
-# Add numbers as strings for countdown #
-
-TEN = "10"
-NINE = "9"
-EIGHT = "8"
-SEVEN = "7"
-SIX = "6"
-FIVE = "5"
-FOUR = "4"
-THREE = "3"
-TWO = "2"
-ONE = "1"
 
 # Import Images #----------------------------------------------------------------------------------------------------------
 
@@ -392,31 +380,41 @@ def baseball():
 
         TOTAL_TIME = pygame.time.get_ticks()
 
-        if TOTAL_TIME - START_TIME > 10000:
+        if TOTAL_TIME - START_TIME > 15000:
             DISPLAY = "out of time"
             START_TIME = TOTAL_TIME
             LIVES -= 1
 
         if 1000 > TOTAL_TIME - START_TIME > 0:
-            disp_timer(TEN, GRAY)
-        elif 2000 > TOTAL_TIME - START_TIME > 1000:
-            disp_timer(NINE, GRAY)
-        elif 3000 > TOTAL_TIME - START_TIME > 2000:
-            disp_timer(EIGHT, GRAY)
-        elif 4000 > TOTAL_TIME - START_TIME > 3000:
-            disp_timer(SEVEN, GRAY)
-        elif 5000 > TOTAL_TIME - START_TIME > 4000:
-            disp_timer(SIX, GRAY)
-        elif 6000 > TOTAL_TIME - START_TIME > 5000:
-            disp_timer(FIVE, GRAY)
+            disp_timer("15", GRAY) 
+        if 2000 > TOTAL_TIME - START_TIME > 1000:
+            disp_timer("14", GRAY) 
+        if 3000 > TOTAL_TIME - START_TIME > 2000:
+            disp_timer("13", GRAY)  
+        if 4000 > TOTAL_TIME - START_TIME > 3000:
+            disp_timer("12", GRAY)   
+        if 5000 > TOTAL_TIME - START_TIME > 4000:
+            disp_timer("11", GRAY)           
+        if 6000 > TOTAL_TIME - START_TIME > 5000:
+            disp_timer("10", GRAY)
         elif 7000 > TOTAL_TIME - START_TIME > 6000:
-            disp_timer(FOUR, GRAY)
+            disp_timer("9", GRAY)
         elif 8000 > TOTAL_TIME - START_TIME > 7000:
-            disp_timer(THREE, RED)
+            disp_timer("8", GRAY)
         elif 9000 > TOTAL_TIME - START_TIME > 8000:
-            disp_timer(TWO, RED)
+            disp_timer("7", GRAY)
         elif 10000 > TOTAL_TIME - START_TIME > 9000:
-            disp_timer(ONE, RED)
+            disp_timer("6", GRAY)
+        elif 11000 > TOTAL_TIME - START_TIME > 10000:
+            disp_timer("5", GRAY)
+        elif 12000 > TOTAL_TIME - START_TIME > 11000:
+            disp_timer("4", GRAY)
+        elif 13000 > TOTAL_TIME - START_TIME > 12000:
+            disp_timer("3", RED)
+        elif 14000 > TOTAL_TIME - START_TIME > 13000:
+            disp_timer("2", RED)
+        elif 15000 > TOTAL_TIME - START_TIME > 14000:
+            disp_timer("1", RED)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
