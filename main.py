@@ -57,6 +57,7 @@ def disp_type(ans, color, x, y):
     TEXT_RECT = TEXT.get_rect(center=(x, y))
     SCREEN.blit(TEXT, TEXT_RECT)
 
+
 # Display Player Submitted Answer Func #------------------------------------------------------------------------------------------
 
 def disp_ans(ans):
@@ -104,9 +105,9 @@ def hide_prev_letter():
 
 # Display Score Func #------------------------------------------------------------------------------------------
 
-def disp_score(score, x, y):
+def disp_score(score, x, y, color):
     score = str(score)
-    TEXT = press_start_font(30).render("SCORE:" + score, True, POWDER_BLUE)
+    TEXT = press_start_font(30).render("SCORE:" + score, True, color)
     TEXT_RECT = TEXT.get_rect(center=(x, y))
     SCREEN.blit(TEXT, TEXT_RECT)
 
@@ -136,8 +137,49 @@ def hide_hearts(x, y, l, h):
 def disp_streak(streak):
     streak = str(streak)
     TEXT = press_start_font(20).render("DOUBLE STREAK x" + streak, True, GREEN)
-    TEXT_RECT = TEXT.get_rect(center=(150, 450))
+    TEXT_RECT = TEXT.get_rect(center=(160, 400))
     SCREEN.blit(TEXT, TEXT_RECT)
+
+# Display Leaderboard #
+
+def disp_high_scores():
+    LEADERBOARD = pd.read_csv("highscores.csv")
+    LEADERBOARD = LEADERBOARD.sort_values(by='score', ascending=False)
+    LEADERBOARD['new'] = LEADERBOARD['name'] + " " + LEADERBOARD['score'].astype(str)
+
+    if len(LEADERBOARD) == 1:
+        FIRST = LEADERBOARD['new'].iloc[0]
+        FIRST_TEXT = press_start_font(30).render(FIRST, True, SEAFOAM)
+        FIRST_TEXT_RECT = FIRST_TEXT.get_rect(center=(640, 300))
+        SCREEN.blit(FIRST_TEXT, FIRST_TEXT_RECT)
+        
+    elif len(LEADERBOARD) == 2:
+        FIRST = LEADERBOARD['new'].iloc[0]
+        FIRST_TEXT = press_start_font(30).render(FIRST, True, SEAFOAM)
+        FIRST_TEXT_RECT = FIRST_TEXT.get_rect(center=(640, 300))
+        SCREEN.blit(FIRST_TEXT, FIRST_TEXT_RECT)
+
+        SEC = LEADERBOARD['new'].iloc[1]
+        SEC_TEXT = press_start_font(30).render(SEC, True, SEAFOAM)
+        SEC_TEXT_RECT = SEC_TEXT.get_rect(center=(640, 350))
+        SCREEN.blit(SEC_TEXT, SEC_TEXT_RECT)
+
+    elif len(LEADERBOARD) > 2:
+        FIRST = LEADERBOARD['new'].iloc[0]
+        FIRST_TEXT = press_start_font(30).render(FIRST, True, SEAFOAM)
+        FIRST_TEXT_RECT = FIRST_TEXT.get_rect(center=(640, 300))
+        SCREEN.blit(FIRST_TEXT, FIRST_TEXT_RECT)
+
+        SEC = LEADERBOARD['new'].iloc[1]
+        SEC_TEXT = press_start_font(30).render(SEC, True, SEAFOAM)
+        SEC_TEXT_RECT = SEC_TEXT.get_rect(center=(640, 350))
+        SCREEN.blit(SEC_TEXT, SEC_TEXT_RECT)
+
+        THIRD = LEADERBOARD['new'].iloc[2]
+        THIRD_TEXT = press_start_font(30).render(THIRD, True, SEAFOAM)
+        THIRD_TEXT_RECT = THIRD_TEXT.get_rect(center=(640, 400))
+        SCREEN.blit(THIRD_TEXT, THIRD_TEXT_RECT) 
+
 
 
 # Main Menu Game Loop #---------------------------------------------------------------------------------------------
@@ -504,6 +546,7 @@ def baseball():
                         if PLAYER_INPUT[:-6] in USED_NAMES:
                             PLAYER_INPUT = ""                        
                             DISPLAY = "dupe"
+                            LIVES -= 1
                         elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and BASEBALL_LIST['Name'].eq(PLAYER_INPUT[:-6]).any():
 
                             CHECK_ANS = PLAYER_INPUT[:-6]
@@ -577,7 +620,7 @@ def baseball():
         # Call Functions to display elements that are always on the screen #            
                
         disp_type(PLAYER_INPUT, GRAY, 655, 595)
-        disp_score(SCORE, 150, 350)
+        disp_score(SCORE, 150, 350, GRAY)
         if LIVES == 2:
             hide_hearts(975, 325, 120, 50)
         elif LIVES == 1:
@@ -586,29 +629,41 @@ def baseball():
         # Game Over Page #
         def game_over():
             INITIALS = ''
+            DISPLAY = ''
 
             while True:
                 GAME_OVER_MOUSE_POS = pygame.mouse.get_pos()
 
                 SCREEN.fill(WHITE)
 
-                pygame.draw.rect(SCREEN, GRAY, (390, 110, 500, 500))
+                pygame.draw.rect(SCREEN, GRAY, (390, 50, 500, 600))
 
                 GAME_OVER_TEXT = press_start_font(30).render("GAME OVER", True, POWDER_BLUE)
-                GAME_OVER_RECT = GAME_OVER_TEXT.get_rect(center=(640, 150))
+                GAME_OVER_RECT = GAME_OVER_TEXT.get_rect(center=(640, 100))
                 SCREEN.blit(GAME_OVER_TEXT, GAME_OVER_RECT)
 
                 NAME_TEXT = press_start_font(30).render("NAME:", True, POWDER_BLUE)
-                NAME_RECT = NAME_TEXT.get_rect(center=(560, 480))
+                NAME_RECT = NAME_TEXT.get_rect(center=(560, 510))
                 SCREEN.blit(NAME_TEXT, NAME_RECT)
 
-                disp_score(SCORE, 640, 200)
+                HIGH_TEXT = press_start_font(30).render("HIGHSCORES", True, POWDER_BLUE)
+                HIGH_RECT = HIGH_TEXT.get_rect(center=(640, 230))
+                SCREEN.blit(HIGH_TEXT, HIGH_RECT)
+
+
+                disp_score(SCORE, 640, 150, SEAFOAM)
                 
 
-                PLAY_AGAIN = Button(None, pos=(640, 535), 
+                PLAY_AGAIN = Button(None, pos=(639, 565), 
                                 text_input="PLAY AGAIN", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
                 PLAY_AGAIN.changeColor(GAME_OVER_MOUSE_POS)
                 PLAY_AGAIN.update(SCREEN)
+
+                SHARE_TEXT = press_start_font(30).render("SHARE", True, POWDER_BLUE)
+                SHARE_RECT = SHARE_TEXT.get_rect(center=(563, 620))
+                SCREEN.blit(SHARE_TEXT, SHARE_RECT)
+
+        
 
                 GAME_OVER_HOME = Button(image=pygame.transform.scale(GRAY_RECT, (130, 50)), pos=(80, 50), 
                                 text_input="HOME", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
@@ -616,7 +671,7 @@ def baseball():
                 GAME_OVER_HOME.changeColor(GAME_OVER_MOUSE_POS)
                 GAME_OVER_HOME.update(SCREEN)
 
-                TWIT_BUT = Button(image=pygame.transform.scale(TWITTER, (100, 50)), pos=(850, 570), 
+                TWIT_BUT = Button(image=pygame.transform.scale(TWITTER, (100, 50)), pos=(700, 620), 
                                 text_input="", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
                 TWIT_BUT.update(SCREEN)
 
@@ -637,9 +692,9 @@ def baseball():
                     if event.type == pygame.KEYDOWN:
                         char_int = pygame.key.name(event.key)
                         INITIALS += char_int
-                        
-                        if INITIALS == "return":
-                            INITIALS = ""
+                                                
+                        if len(INITIALS) > 3:
+                            INITIALS = INITIALS[:3]
                         
                         if event.key == pygame.K_BACKSPACE:
                             INITIALS = INITIALS[:-10]
@@ -680,6 +735,10 @@ def baseball():
                             INITIALS = INITIALS[:-5]
                         if event.key == pygame.K_RETURN:
                             INITIALS = INITIALS[:-6]
+
+                            if INITIALS == "":
+                                INITIALS = "xxx"
+
                             SCORE_INIT = {'name': [INITIALS], 
                                             'score': [SCORE]
                                             }
@@ -687,8 +746,10 @@ def baseball():
                             HIGHSCORE_DF = HIGHSCORE_DF.sort_values(by=['score'])
                             HIGHSCORE_DF.to_csv('highscores.csv', mode='a', index=False, header=False)
                             INITIALS = ""
+                            
                         
-                disp_type(INITIALS, WHITE, 700, 480)
+                disp_type(INITIALS, WHITE, 700, 510)
+                disp_high_scores()
 
                 pygame.display.update()     
 
