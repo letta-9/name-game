@@ -629,7 +629,7 @@ def baseball():
         # Game Over Page #
         def game_over():
             INITIALS = ''
-            DISPLAY = ''
+            SAVES = 0
 
             while True:
                 GAME_OVER_MOUSE_POS = pygame.mouse.get_pos()
@@ -734,18 +734,23 @@ def baseball():
                         if event.key == pygame.K_KP_ENTER:
                             INITIALS = INITIALS[:-5]
                         if event.key == pygame.K_RETURN:
-                            INITIALS = INITIALS[:-6]
+                            if SAVES == 0:
+                                #INITIALS = INITIALS[:-6]
 
-                            if INITIALS == "":
-                                INITIALS = "xxx"
+                                if INITIALS == "":
+                                    INITIALS = "aaa"
 
-                            SCORE_INIT = {'name': [INITIALS], 
-                                            'score': [SCORE]
-                                            }
-                            HIGHSCORE_DF = pd.DataFrame(SCORE_INIT)
-                            HIGHSCORE_DF = HIGHSCORE_DF.sort_values(by=['score'])
-                            HIGHSCORE_DF.to_csv('highscores.csv', mode='a', index=False, header=False)
-                            INITIALS = ""
+                                SCORE_INIT = {'name': [INITIALS], 
+                                                'score': [SCORE]
+                                                }
+                                HIGHSCORE_DF = pd.DataFrame(SCORE_INIT)
+                                HIGHSCORE_DF = HIGHSCORE_DF.sort_values(by=['score'])
+                                HIGHSCORE_DF.to_csv('highscores.csv', mode='a', index=False, header=False)
+                                INITIALS = ""
+                            else:
+                                INITIALS = ""
+                            
+                            SAVES += 1
                             
                         
                 disp_type(INITIALS, WHITE, 700, 510)
