@@ -687,7 +687,7 @@ def baseball():
                         if PLAY_AGAIN.checkForInput(GAME_OVER_MOUSE_POS):
                             baseball()
                         if TWIT_BUT.checkForInput(GAME_OVER_MOUSE_POS):
-                            webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20Baseball%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Flettasports.com")
+                            webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20Baseball%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Fcbb-elo.com")
 
                     if event.type == pygame.KEYDOWN:
                         char_int = pygame.key.name(event.key)
