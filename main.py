@@ -345,8 +345,8 @@ def baseball_rules():
         RULES_BACK.changeColor(RULES_MOUSE_POS)
         RULES_BACK.update(SCREEN)
 
-        RULES_BODY = BASEBALL_RULES.get_rect(center=(640,350))
-        SCREEN.blit(BASEBALL_RULES, RULES_BODY)
+        # RULES_BODY = BASEBALL_RULES.get_rect(center=(640,350))
+        # SCREEN.blit(BASEBALL_RULES, RULES_BODY)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -811,7 +811,7 @@ def football():
         
         SCREEN.fill(WHITE)
 
-        TITLE_TEXT = press_start_font(45).render("FOOTBALL", True, POWDER_BLUE)
+        TITLE_TEXT = press_start_font(45).render("NFL", True, POWDER_BLUE)
         TITLE_RECT = TITLE_TEXT.get_rect(center=(655, 50))
         SCREEN.blit(TITLE_TEXT, TITLE_RECT)
 
