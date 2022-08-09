@@ -17,6 +17,7 @@ TOTAL_TIME = 0
 START_TIME = 0
 
 
+
 # Add Colors As Constants #----------------------------------------------------------------------------------------------------------
 
 WHITE = (255, 255, 255)
@@ -142,8 +143,8 @@ def disp_streak(streak):
 
 # Display Leaderboard #
 
-def disp_high_scores():
-    LEADERBOARD = pd.read_csv("highscores.csv")
+def disp_high_scores(cat):
+    LEADERBOARD = pd.read_csv(f"{cat}_highscores.csv")
     LEADERBOARD = LEADERBOARD.sort_values(by='score', ascending=False)
     LEADERBOARD['new'] = LEADERBOARD['name'] + " " + LEADERBOARD['score'].astype(str)
 
@@ -179,7 +180,6 @@ def disp_high_scores():
         THIRD_TEXT = press_start_font(30).render(THIRD, True, SEAFOAM)
         THIRD_TEXT_RECT = THIRD_TEXT.get_rect(center=(640, 400))
         SCREEN.blit(THIRD_TEXT, THIRD_TEXT_RECT) 
-
 
 
 # Main Menu Game Loop #---------------------------------------------------------------------------------------------
@@ -223,7 +223,6 @@ def main_menu():
         pygame.display.update()
 
 
-
 # Category Screen Game Loop #-------------------------------------------------------------------------------------------
 
 def play_cat():
@@ -238,45 +237,29 @@ def play_cat():
 
         # Category Buttons #
 
-        MOVIES_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 285), 
-                            text_input="ACTORS/ACTRESSES", font=press_start_font(15), base_color=SEAFOAM, hovering_color=WHITE)
-        MOVIES_CAT.changeColor(PLAY_MOUSE_POS)
-        MOVIES_CAT.update(SCREEN)
-
         BASEBALL_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 225), 
-                            text_input="BASEBALL", font=press_start_font(25), base_color=SEAFOAM, hovering_color=WHITE)
+                            text_input="MLB", font=press_start_font(25), base_color=SEAFOAM, hovering_color=WHITE)
         BASEBALL_CAT.changeColor(PLAY_MOUSE_POS)
-        BASEBALL_CAT.update(SCREEN)
+        BASEBALL_CAT.update(SCREEN)        
+        
 
-        MUSICIANS = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 345), 
-                            text_input="MUSICIANS", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
-        MUSICIANS.changeColor(PLAY_MOUSE_POS)
-        MUSICIANS.update(SCREEN)
+        FOOTBALL_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 285), 
+                            text_input="NFL", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
+        FOOTBALL_CAT.changeColor(PLAY_MOUSE_POS)
+        FOOTBALL_CAT.update(SCREEN)  
 
-        # FOOTBALL_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 405), 
-        #                     text_input="NFL'21-'22", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
-        # FOOTBALL_CAT.changeColor(PLAY_MOUSE_POS)
-        # FOOTBALL_CAT.update(SCREEN)
+    
+        BASKETBALL_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 345), 
+                            text_input="NBA", font=press_start_font(25), base_color=SEAFOAM, hovering_color=WHITE)
+        BASKETBALL_CAT.changeColor(PLAY_MOUSE_POS)
+        BASKETBALL_CAT.update(SCREEN)
 
-        # HOCKEY_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 465), 
-        #                     text_input="NHL'21-'22", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
-        # HOCKEY_CAT.changeColor(PLAY_MOUSE_POS)
-        # HOCKEY_CAT.update(SCREEN)
 
-        # SOCCER_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 525), 
-        #                     text_input="MLS'22", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
-        # SOCCER_CAT.changeColor(PLAY_MOUSE_POS)
-        # SOCCER_CAT.update(SCREEN)
+        HOCKEY_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 405), 
+                            text_input="NHL", font=press_start_font(22), base_color=SEAFOAM, hovering_color=WHITE)
+        HOCKEY_CAT.changeColor(PLAY_MOUSE_POS)
+        HOCKEY_CAT.update(SCREEN)
 
-        # GOLF_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 585), 
-        #                     text_input="GOLF", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
-        # GOLF_CAT.changeColor(PLAY_MOUSE_POS)
-        # GOLF_CAT.update(SCREEN)
-
-        # TENNIS_CAT = Button(image=pygame.transform.scale(GRAY_RECT, (250, 50)), pos=(645, 645), 
-        #                     text_input="TENNIS", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
-        # TENNIS_CAT.changeColor(PLAY_MOUSE_POS)
-        # TENNIS_CAT.update(SCREEN)
 
         # Back Button #
 
@@ -295,11 +278,13 @@ def play_cat():
                     main_menu()
                 if BASEBALL_CAT.checkForInput(PLAY_MOUSE_POS):
                     baseball_rules()
+                if FOOTBALL_CAT.checkForInput(PLAY_MOUSE_POS):
+                    football_rules()
 
         pygame.display.update()
   
 
-# Contact Screen Game Loop #----------------------------------------------------------------------------------------
+# Contact Screen Page #
 
 def contact():
     while True:
@@ -335,11 +320,11 @@ def contact():
 
         pygame.display.update()
 
-# Baseball Rules Window #-------------------------------------------------------------------------------------------
+# Baseball Rules Page #
 
 def baseball_rules():
     while True:
-        BASEBALL_RULES_MOUSE_POS = pygame.mouse.get_pos()
+        RULES_MOUSE_POS = pygame.mouse.get_pos()
 
         SCREEN.fill(WHITE)
 
@@ -349,16 +334,16 @@ def baseball_rules():
         RULES_RECT = RULES_TEXT.get_rect(center=(640, 150))
         SCREEN.blit(RULES_TEXT, RULES_RECT)
 
-        BASEBALL_RULES_PLAY = Button(None, pos=(640, 555), 
+        RULES_PLAY = Button(None, pos=(640, 555), 
                         text_input="PLAY", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
-        BASEBALL_RULES_PLAY.changeColor(BASEBALL_RULES_MOUSE_POS)
-        BASEBALL_RULES_PLAY.update(SCREEN)
+        RULES_PLAY.changeColor(RULES_MOUSE_POS)
+        RULES_PLAY.update(SCREEN)
 
-        BASEBALL_RULES_BACK = Button(image=pygame.transform.scale(GRAY_RECT, (130, 50)), pos=(80, 50), 
+        RULES_BACK = Button(image=pygame.transform.scale(GRAY_RECT, (130, 50)), pos=(80, 50), 
                         text_input="BACK", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
 
-        BASEBALL_RULES_BACK.changeColor(BASEBALL_RULES_MOUSE_POS)
-        BASEBALL_RULES_BACK.update(SCREEN)
+        RULES_BACK.changeColor(RULES_MOUSE_POS)
+        RULES_BACK.update(SCREEN)
 
         RULES_BODY = BASEBALL_RULES.get_rect(center=(640,350))
         SCREEN.blit(BASEBALL_RULES, RULES_BODY)
@@ -368,9 +353,9 @@ def baseball_rules():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if BASEBALL_RULES_BACK.checkForInput(BASEBALL_RULES_MOUSE_POS):
+                if RULES_BACK.checkForInput(RULES_MOUSE_POS):
                     play_cat()
-                if BASEBALL_RULES_PLAY.checkForInput(BASEBALL_RULES_MOUSE_POS):
+                if RULES_PLAY.checkForInput(RULES_MOUSE_POS):
                     baseball()
 
         pygame.display.update()
@@ -387,30 +372,30 @@ def baseball():
     RANDOM_START = random.choice(ALPHABET)
     USED_NAMES = []
     DISPLAY = ""
-    BASEBALL_LIST = pd.read_csv('mlb_list.csv')
+    MLB_LIST = pd.read_csv('mlb_list.csv')
     TURNS = 0
     DOUBLE_STREAK = 0
 
 
+
     while True:
-        BASEBALL_MOUSE_POS = pygame.mouse.get_pos()
+        MOUSE_POS = pygame.mouse.get_pos()
         
         SCREEN.fill(WHITE)
 
-        BASEBALL_TEXT = press_start_font(45).render("BASEBALL", True, POWDER_BLUE)
-        BASEBALL_RECT = BASEBALL_TEXT.get_rect(center=(655, 50))
-        SCREEN.blit(BASEBALL_TEXT, BASEBALL_RECT)
+        TITLE_TEXT = press_start_font(45).render("MLB", True, POWDER_BLUE)  #
+        TITLE_RECT = TITLE_TEXT.get_rect(center=(655, 50))
+        SCREEN.blit(TITLE_TEXT, TITLE_RECT)
 
-        LETTER_TEXT = press_start_font(20).render("NAME A BASEBALL PLAYER WHOSE NAME STARTS WITH:", True, GRAY)
+        LETTER_TEXT = press_start_font(20).render("NAME A BASEBALL PLAYER WHOSE NAME STARTS WITH:", True, GRAY)     #
         LETTER_RECT = LETTER_TEXT.get_rect(center=(640, 110))
         SCREEN.blit(LETTER_TEXT, LETTER_RECT)
 
-  
-        BASEBALL_QUIT = Button(image=pygame.transform.scale(GRAY_RECT, (130, 50)), pos=(80, 50), 
+        QUIT_BUT = Button(image=pygame.transform.scale(GRAY_RECT, (130, 50)), pos=(80, 50), 
                         text_input="QUIT", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
 
-        BASEBALL_QUIT.changeColor(BASEBALL_MOUSE_POS)
-        BASEBALL_QUIT.update(SCREEN)
+        QUIT_BUT.changeColor(MOUSE_POS)
+        QUIT_BUT.update(SCREEN)
 
         SCREEN.blit(INPUT_BG, [250,550])
 
@@ -463,7 +448,7 @@ def baseball():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if BASEBALL_QUIT.checkForInput(BASEBALL_MOUSE_POS):
+                if QUIT_BUT.checkForInput(MOUSE_POS):
                     play_cat()
             if event.type == pygame.KEYDOWN:
                 char = pygame.key.name(event.key)
@@ -513,7 +498,7 @@ def baseball():
                     START_TIME = TOTAL_TIME
 
                     if SCORE == 0 and len(PLAYER_INPUT) > 6:
-                        if PLAYER_INPUT[:-6][0] == RANDOM_START and BASEBALL_LIST['Name'].eq(PLAYER_INPUT[:-6]).any():
+                        if PLAYER_INPUT[:-6][0] == RANDOM_START and MLB_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
                             CHECK_ANS = PLAYER_INPUT[:-6]
                             FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
@@ -547,7 +532,7 @@ def baseball():
                             PLAYER_INPUT = ""                        
                             DISPLAY = "dupe"
                             LIVES -= 1
-                        elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and BASEBALL_LIST['Name'].eq(PLAYER_INPUT[:-6]).any():
+                        elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and MLB_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
 
                             CHECK_ANS = PLAYER_INPUT[:-6]
                             FIRST_LETTER = PLAYER_INPUT[0]
@@ -687,7 +672,7 @@ def baseball():
                         if PLAY_AGAIN.checkForInput(GAME_OVER_MOUSE_POS):
                             baseball()
                         if TWIT_BUT.checkForInput(GAME_OVER_MOUSE_POS):
-                            webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20Baseball%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Fcbb-elo.com")
+                            webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20MLB%20Baseball%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Fcbb-elo.com")     #
 
                     if event.type == pygame.KEYDOWN:
                         char_int = pygame.key.name(event.key)
@@ -745,7 +730,7 @@ def baseball():
                                                 }
                                 HIGHSCORE_DF = pd.DataFrame(SCORE_INIT)
                                 HIGHSCORE_DF = HIGHSCORE_DF.sort_values(by=['score'])
-                                HIGHSCORE_DF.to_csv('highscores.csv', mode='a', index=False, header=False)
+                                HIGHSCORE_DF.to_csv('mlb_highscores.csv', mode='a', index=False, header=False)              #
                                 INITIALS = ""
                             else:
                                 INITIALS = ""
@@ -754,7 +739,7 @@ def baseball():
                             
                         
                 disp_type(INITIALS, WHITE, 700, 510)
-                disp_high_scores()
+                disp_high_scores('mlb')
 
                 pygame.display.update()     
 
@@ -763,7 +748,436 @@ def baseball():
 
         pygame.display.update()
         
+# Football Rules Page
+
+def football_rules():
+    while True:
+        RULES_MOUSE_POS = pygame.mouse.get_pos()
+
+        SCREEN.fill(WHITE)
+
+        pygame.draw.rect(SCREEN, GRAY, (390, 110, 500, 500))
+
+        RULES_TEXT = press_start_font(30).render("RULES", True, POWDER_BLUE)
+        RULES_RECT = RULES_TEXT.get_rect(center=(640, 150))
+        SCREEN.blit(RULES_TEXT, RULES_RECT)
+
+        RULES_PLAY = Button(None, pos=(640, 555), 
+                        text_input="PLAY", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+        RULES_PLAY.changeColor(RULES_MOUSE_POS)
+        RULES_PLAY.update(SCREEN)
+
+        RULES_BACK = Button(image=pygame.transform.scale(GRAY_RECT, (130, 50)), pos=(80, 50), 
+                        text_input="BACK", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+
+        RULES_BACK.changeColor(RULES_MOUSE_POS)
+        RULES_BACK.update(SCREEN)
+
+        # RULES_BODY = FOOTBALL_RULES.get_rect(center=(640,350))
+        # SCREEN.blit(FOOTBALL_RULES, RULES_BODY)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if RULES_BACK.checkForInput(RULES_MOUSE_POS):
+                    play_cat()
+                if RULES_PLAY.checkForInput(RULES_MOUSE_POS):
+                    football()
+
+        pygame.display.update()
+
+# Football Game Loop #
+
+def football():
+    START_TIME = pygame.time.get_ticks()
+    PLAYER_INPUT = ""
+    CHECK_ANS = ""
+    SCORE = 0
+    LIVES = 3
+    ALPHABET = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
+    RANDOM_START = random.choice(ALPHABET)
+    USED_NAMES = []
+    DISPLAY = ""
+    NFL_LIST = pd.read_csv('nfl_list.csv')
+    TURNS = 0
+    DOUBLE_STREAK = 0
+
+
+
+    while True:
+        MOUSE_POS = pygame.mouse.get_pos()
+        
+        SCREEN.fill(WHITE)
+
+        TITLE_TEXT = press_start_font(45).render("FOOTBALL", True, POWDER_BLUE)
+        TITLE_RECT = TITLE_TEXT.get_rect(center=(655, 50))
+        SCREEN.blit(TITLE_TEXT, TITLE_RECT)
+
+        LETTER_TEXT = press_start_font(20).render("NAME A FOOTBALL PLAYER WHOSE NAME STARTS WITH:", True, GRAY)
+        LETTER_RECT = LETTER_TEXT.get_rect(center=(640, 110))
+        SCREEN.blit(LETTER_TEXT, LETTER_RECT)
+
+  
+        QUIT_BUT = Button(image=pygame.transform.scale(GRAY_RECT, (130, 50)), pos=(80, 50), 
+                        text_input="QUIT", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+
+        QUIT_BUT.changeColor(MOUSE_POS)
+        QUIT_BUT.update(SCREEN)
+
+        SCREEN.blit(INPUT_BG, [250,550])
+
+        SCREEN.blit(HEART, [1020, 300])
+        SCREEN.blit(HEART, [1070, 300])
+        SCREEN.blit(HEART, [1120, 300])
+        
+        disp_play_letter(RANDOM_START)
+
+        TOTAL_TIME = pygame.time.get_ticks()
+
+        if TOTAL_TIME - START_TIME > 15000:
+            DISPLAY = "out of time"
+            START_TIME = TOTAL_TIME
+            LIVES -= 1
+
+        if 1000 > TOTAL_TIME - START_TIME > 0:
+            disp_timer("15", GRAY) 
+        if 2000 > TOTAL_TIME - START_TIME > 1000:
+            disp_timer("14", GRAY) 
+        if 3000 > TOTAL_TIME - START_TIME > 2000:
+            disp_timer("13", GRAY)  
+        if 4000 > TOTAL_TIME - START_TIME > 3000:
+            disp_timer("12", GRAY)   
+        if 5000 > TOTAL_TIME - START_TIME > 4000:
+            disp_timer("11", GRAY)           
+        if 6000 > TOTAL_TIME - START_TIME > 5000:
+            disp_timer("10", GRAY)
+        elif 7000 > TOTAL_TIME - START_TIME > 6000:
+            disp_timer("9", GRAY)
+        elif 8000 > TOTAL_TIME - START_TIME > 7000:
+            disp_timer("8", GRAY)
+        elif 9000 > TOTAL_TIME - START_TIME > 8000:
+            disp_timer("7", GRAY)
+        elif 10000 > TOTAL_TIME - START_TIME > 9000:
+            disp_timer("6", GRAY)
+        elif 11000 > TOTAL_TIME - START_TIME > 10000:
+            disp_timer("5", GRAY)
+        elif 12000 > TOTAL_TIME - START_TIME > 11000:
+            disp_timer("4", GRAY)
+        elif 13000 > TOTAL_TIME - START_TIME > 12000:
+            disp_timer("3", RED)
+        elif 14000 > TOTAL_TIME - START_TIME > 13000:
+            disp_timer("2", RED)
+        elif 15000 > TOTAL_TIME - START_TIME > 14000:
+            disp_timer("1", RED)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if QUIT_BUT.checkForInput(MOUSE_POS):
+                    play_cat()
+            if event.type == pygame.KEYDOWN:
+                char = pygame.key.name(event.key)
+                PLAYER_INPUT += char
                 
+                if PLAYER_INPUT == "return":
+                    PLAYER_INPUT = ""
+                
+                if event.key == pygame.K_BACKSPACE:
+                    PLAYER_INPUT = PLAYER_INPUT[:-10]
+                if event.key == pygame.K_SPACE:
+                    PLAYER_INPUT = PLAYER_INPUT[:-5]
+                    PLAYER_INPUT += " "
+                if event.key == pygame.K_TAB:
+                    PLAYER_INPUT = PLAYER_INPUT[:-3]
+                if event.key == pygame.K_CAPSLOCK:
+                    PLAYER_INPUT = PLAYER_INPUT[:-9]                   
+                if event.key == pygame.K_RSHIFT:
+                    PLAYER_INPUT = PLAYER_INPUT[:-11]
+                if event.key == pygame.K_LSHIFT:
+                    PLAYER_INPUT = PLAYER_INPUT[:-10]
+                if event.key == pygame.K_RCTRL:
+                    PLAYER_INPUT = PLAYER_INPUT[:-10]  
+                if event.key == pygame.K_LCTRL:
+                    PLAYER_INPUT = PLAYER_INPUT[:-9]  
+                if event.key == pygame.K_RALT:
+                    PLAYER_INPUT = PLAYER_INPUT[:-9]
+                if event.key == pygame.K_LALT:
+                    PLAYER_INPUT = PLAYER_INPUT[:-8] 
+                if event.key == pygame.K_UP:
+                    PLAYER_INPUT = PLAYER_INPUT[:-2]
+                if event.key == pygame.K_DOWN:
+                    PLAYER_INPUT = PLAYER_INPUT[:-4]
+                if event.key == pygame.K_LEFT:
+                    PLAYER_INPUT = PLAYER_INPUT[:-4]
+                if event.key == pygame.K_RIGHT:
+                    PLAYER_INPUT = PLAYER_INPUT[:-5]
+                if event.key == pygame.K_RMETA:
+                    PLAYER_INPUT = PLAYER_INPUT[:-10]
+                if event.key == pygame.K_LMETA:
+                    PLAYER_INPUT = PLAYER_INPUT[:-9]
+                if event.key == pygame.K_NUMLOCK:
+                    PLAYER_INPUT = PLAYER_INPUT[:-7]
+                if event.key == pygame.K_KP_ENTER:
+                    PLAYER_INPUT = PLAYER_INPUT[:-5]
+                if event.key == pygame.K_RETURN:   
+                    START_TIME = TOTAL_TIME
+
+                    if SCORE == 0 and len(PLAYER_INPUT) > 6:
+                        if PLAYER_INPUT[:-6][0] == RANDOM_START and NFL_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
+                            CHECK_ANS = PLAYER_INPUT[:-6]
+                            FIRST_LETTER = PLAYER_INPUT[0]
+                            PLAYER_INPUT = ""
+                            DISPLAY = "correct"
+                            USED_NAMES.append(CHECK_ANS)
+
+                            NAME_BREAK_INDEX = CHECK_ANS.find(" ")
+                            PLAY_LETTER_INDEX = NAME_BREAK_INDEX + 1
+                            PLAY_LETTER = CHECK_ANS[PLAY_LETTER_INDEX]
+                            
+                            TURNS += 1
+
+                            if FIRST_LETTER == PLAY_LETTER:
+                                SCORE += 200
+                                DOUBLE_STREAK += 1
+                            else:
+                                SCORE += 100
+                                DOUBLE_STREAK = 0
+
+                            if DOUBLE_STREAK > 1:
+                                BONUS = (DOUBLE_STREAK - 1) * 100
+                                SCORE += BONUS
+                                DISPLAY = "streak"
+                        else:
+                            PLAYER_INPUT = ""                        
+                            DISPLAY = "incorrect"
+                            LIVES -= 1
+                            
+                    elif SCORE > 0 and len(PLAYER_INPUT) > 6:
+                        if PLAYER_INPUT[:-6] in USED_NAMES:
+                            PLAYER_INPUT = ""                        
+                            DISPLAY = "dupe"
+                            LIVES -= 1
+                        elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and NFL_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
+
+                            CHECK_ANS = PLAYER_INPUT[:-6]
+                            FIRST_LETTER = PLAYER_INPUT[0]
+                            PLAYER_INPUT = ""
+                            DISPLAY = "correct"  
+                            USED_NAMES.append(CHECK_ANS)
+
+                            NAME_BREAK_INDEX = CHECK_ANS.find(" ")
+                            PLAY_LETTER_INDEX = NAME_BREAK_INDEX + 1
+                            PLAY_LETTER = CHECK_ANS[PLAY_LETTER_INDEX]
+			    
+                            TURNS += 1
+
+                            if FIRST_LETTER == PLAY_LETTER:
+                                SCORE += 200
+                                DOUBLE_STREAK += 1
+                            else:
+                                SCORE += 100
+                                DOUBLE_STREAK = 0
+
+                            if DOUBLE_STREAK > 1:
+                                BONUS = (DOUBLE_STREAK - 1) * 100
+                                SCORE += BONUS
+                                DISPLAY = "streak"
+                            
+                        else:
+                            DISPLAY = "incorrect"
+                            PLAYER_INPUT = ""
+                            LIVES -= 1
+                    
+                        
+                          
+        # Change display whether the answer is correct or incorrect #
+        if DISPLAY == "correct":
+            disp_ans(CHECK_ANS)
+            hide_prev_letter()
+            disp_play_letter(PLAY_LETTER)
+        elif DISPLAY == "dupe":
+            dupe_ans()
+            hide_prev_letter()
+            if SCORE == 0:
+                disp_play_letter(RANDOM_START)
+            else:
+                disp_play_letter(PLAY_LETTER)
+        elif DISPLAY == "incorrect":
+            wrong_ans()
+            hide_prev_letter()
+            if SCORE == 0:
+                disp_play_letter(RANDOM_START)
+            else:
+                disp_play_letter(PLAY_LETTER)
+        elif DISPLAY == "out of time":
+            if LIVES == 2:
+                no_time_1()
+                hide_prev_letter()
+            elif LIVES == 1:
+                no_time_2()
+                hide_prev_letter()
+
+            if SCORE == 0:
+                disp_play_letter(RANDOM_START)
+            else:
+                disp_play_letter(PLAY_LETTER)
+        elif DISPLAY == "streak":
+            disp_streak(DOUBLE_STREAK)
+            disp_ans(CHECK_ANS)
+            hide_prev_letter()
+            disp_play_letter(PLAY_LETTER)
+        
+        # Call Functions to display elements that are always on the screen #            
+               
+        disp_type(PLAYER_INPUT, GRAY, 655, 595)
+        disp_score(SCORE, 150, 350, GRAY)
+        if LIVES == 2:
+            hide_hearts(975, 325, 120, 50)
+        elif LIVES == 1:
+            hide_hearts(975, 325, 170, 50)
+
+        # Game Over Page #
+        def game_over():
+            INITIALS = ''
+            SAVES = 0
+
+            while True:
+                GAME_OVER_MOUSE_POS = pygame.mouse.get_pos()
+
+                SCREEN.fill(WHITE)
+
+                pygame.draw.rect(SCREEN, GRAY, (390, 50, 500, 600))
+
+                GAME_OVER_TEXT = press_start_font(30).render("GAME OVER", True, POWDER_BLUE)
+                GAME_OVER_RECT = GAME_OVER_TEXT.get_rect(center=(640, 100))
+                SCREEN.blit(GAME_OVER_TEXT, GAME_OVER_RECT)
+
+                NAME_TEXT = press_start_font(30).render("NAME:", True, POWDER_BLUE)
+                NAME_RECT = NAME_TEXT.get_rect(center=(560, 510))
+                SCREEN.blit(NAME_TEXT, NAME_RECT)
+
+                HIGH_TEXT = press_start_font(30).render("HIGHSCORES", True, POWDER_BLUE)
+                HIGH_RECT = HIGH_TEXT.get_rect(center=(640, 230))
+                SCREEN.blit(HIGH_TEXT, HIGH_RECT)
+
+
+                disp_score(SCORE, 640, 150, SEAFOAM)
+                
+
+                PLAY_AGAIN = Button(None, pos=(639, 565), 
+                                text_input="PLAY AGAIN", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+                PLAY_AGAIN.changeColor(GAME_OVER_MOUSE_POS)
+                PLAY_AGAIN.update(SCREEN)
+
+                SHARE_TEXT = press_start_font(30).render("SHARE", True, POWDER_BLUE)
+                SHARE_RECT = SHARE_TEXT.get_rect(center=(563, 620))
+                SCREEN.blit(SHARE_TEXT, SHARE_RECT)
+
+        
+
+                GAME_OVER_HOME = Button(image=pygame.transform.scale(GRAY_RECT, (130, 50)), pos=(80, 50), 
+                                text_input="HOME", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+
+                GAME_OVER_HOME.changeColor(GAME_OVER_MOUSE_POS)
+                GAME_OVER_HOME.update(SCREEN)
+
+                TWIT_BUT = Button(image=pygame.transform.scale(TWITTER, (100, 50)), pos=(700, 620), 
+                                text_input="", font=press_start_font(30), base_color=SEAFOAM, hovering_color=WHITE)
+                TWIT_BUT.update(SCREEN)
+
+                
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if GAME_OVER_HOME.checkForInput(GAME_OVER_MOUSE_POS):
+                            main_menu()
+                        if PLAY_AGAIN.checkForInput(GAME_OVER_MOUSE_POS):
+                            baseball()
+                        if TWIT_BUT.checkForInput(GAME_OVER_MOUSE_POS):
+                            webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20NFL%20Football%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Fcbb-elo.com")
+
+                    if event.type == pygame.KEYDOWN:
+                        char_int = pygame.key.name(event.key)
+                        INITIALS += char_int
+                                                
+                        if len(INITIALS) > 3:
+                            INITIALS = INITIALS[:3]
+                        
+                        if event.key == pygame.K_BACKSPACE:
+                            INITIALS = INITIALS[:-10]
+                        if event.key == pygame.K_SPACE:
+                            INITIALS = INITIALS[:-5]
+                            INITIALS += " "
+                        if event.key == pygame.K_TAB:
+                            INITIALS = INITIALS[:-3]
+                        if event.key == pygame.K_CAPSLOCK:
+                            INITIALS = INITIALS[:-9]                   
+                        if event.key == pygame.K_RSHIFT:
+                            INITIALS = INITIALS[:-11]
+                        if event.key == pygame.K_LSHIFT:
+                            INITIALS = INITIALS[:-10]
+                        if event.key == pygame.K_RCTRL:
+                            INITIALS = INITIALS[:-10]  
+                        if event.key == pygame.K_LCTRL:
+                            INITIALS = INITIALS[:-9]  
+                        if event.key == pygame.K_RALT:
+                            INITIALS = INITIALS[:-9]
+                        if event.key == pygame.K_LALT:
+                            INITIALS = INITIALS[:-8] 
+                        if event.key == pygame.K_UP:
+                            INITIALS = INITIALS[:-2]
+                        if event.key == pygame.K_DOWN:
+                            INITIALS = INITIALS[:-4]
+                        if event.key == pygame.K_LEFT:
+                            INITIALS = INITIALS[:-4]
+                        if event.key == pygame.K_RIGHT:
+                            INITIALS = INITIALS[:-5]
+                        if event.key == pygame.K_RMETA:
+                            INITIALS = INITIALS[:-10]
+                        if event.key == pygame.K_LMETA:
+                            INITIALS = INITIALS[:-9]
+                        if event.key == pygame.K_NUMLOCK:
+                            INITIALS = INITIALS[:-7]
+                        if event.key == pygame.K_KP_ENTER:
+                            INITIALS = INITIALS[:-5]
+                        if event.key == pygame.K_RETURN:
+                            if SAVES == 0:
+                                #INITIALS = INITIALS[:-6]
+
+                                if INITIALS == "":
+                                    INITIALS = "aaa"
+
+                                SCORE_INIT = {'name': [INITIALS], 
+                                                'score': [SCORE]
+                                                }
+                                HIGHSCORE_DF = pd.DataFrame(SCORE_INIT)
+                                HIGHSCORE_DF = HIGHSCORE_DF.sort_values(by=['score'])
+                                HIGHSCORE_DF.to_csv('nfl_highscores.csv', mode='a', index=False, header=False)
+                                INITIALS = ""
+                            else:
+                                INITIALS = ""
+                            
+                            SAVES += 1
+                            
+                        
+                disp_type(INITIALS, WHITE, 700, 510)
+                disp_high_scores('nfl')
+
+                pygame.display.update()     
+
+        if LIVES == 0:
+            game_over()
+
+        pygame.display.update()
+
+
 # Start the Game #--------------------------------------------------------------------------------------------------
 
 
