@@ -387,7 +387,7 @@ def baseball():
     RANDOM_START = random.choice(ALPHABET)
     USED_NAMES = []
     DISPLAY = ""
-    BASEBALL_LIST = pd.read_csv('baseball_list_py.csv')
+    BASEBALL_LIST = pd.read_csv('mlb_list.csv')
     TURNS = 0
     DOUBLE_STREAK = 0
 
