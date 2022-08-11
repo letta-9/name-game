@@ -42,6 +42,12 @@ TWITTER = pygame.image.load("twitter.png")
 HEART = pygame.transform.scale(pygame.image.load("heart.png"), (100, 100))
 BASEBALL_RULES = pygame.transform.scale(pygame.image.load("baseball_rules.png"), (400, 350))
 
+# Import Sounds #----------------------------------------------------------------------------------------------------------
+
+CLICK = pygame.mixer.Sound('click.wav')
+CORRECT = pygame.mixer.Sound('correct.wav')
+INCORRECT = pygame.mixer.Sound('incorrect.wav')
+
 # Define Font Functions Func #-----------------------------------------------------------------------------------------------------------
 
 def press_start_font(size):
@@ -192,7 +198,12 @@ def main_menu():
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         MENU_TEXT = press_start_font(100).render("NAME GAME", True, POWDER_BLUE)
-        MENU_RECT = MENU_TEXT.get_rect(center=(640, 175))
+        MENU_RECT = MENU_TEXT.get_rect(center=(640, 150))
+        SCREEN.blit(MENU_TEXT, MENU_RECT)
+
+        SPORTS_TEXT = press_start_font(30).render("SPORTS EDITION", True, POWDER_BLUE)
+        SPORTS_RECT = SPORTS_TEXT.get_rect(center=(640, 225))
+        SCREEN.blit(SPORTS_TEXT, SPORTS_RECT)
 
         PLAY_BUTTON = Button(image=pygame.transform.scale(GRAY_RECT, (300, 100)), pos=(640, 350), 
                             text_input="PLAY", font=press_start_font(50), base_color=SEAFOAM, hovering_color=WHITE)
@@ -201,7 +212,7 @@ def main_menu():
         QUIT_BUTTON = Button(image=pygame.transform.scale(GRAY_RECT, (300, 100)), pos=(640, 600), 
                             text_input="QUIT", font=press_start_font(50), base_color=SEAFOAM, hovering_color=WHITE)
 
-        SCREEN.blit(MENU_TEXT, MENU_RECT)
+        
 
         for button in [PLAY_BUTTON, CONTACT_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
@@ -209,14 +220,18 @@ def main_menu():
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                CLICK.play()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    CLICK.play()
                     play_cat()
                 if CONTACT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    CLICK.play()
                     contact()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    CLICK.play()
                     pygame.quit()
                     sys.exit()
 
@@ -271,14 +286,18 @@ def play_cat():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                CLICK.play()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
+                    CLICK.play()
                     main_menu()
                 if BASEBALL_CAT.checkForInput(PLAY_MOUSE_POS):
+                    CLICK.play()
                     baseball_rules()
                 if FOOTBALL_CAT.checkForInput(PLAY_MOUSE_POS):
+                    CLICK.play()
                     football_rules()
 
         pygame.display.update()
@@ -316,6 +335,7 @@ def contact():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if CONTACT_BACK.checkForInput(CONTACT_MOUSE_POS):
+                    CLICK.play()
                     main_menu()
 
         pygame.display.update()
@@ -350,12 +370,15 @@ def baseball_rules():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                CLICK.play()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if RULES_BACK.checkForInput(RULES_MOUSE_POS):
+                    CLICK.play()
                     play_cat()
                 if RULES_PLAY.checkForInput(RULES_MOUSE_POS):
+                    CLICK.play()
                     baseball()
 
         pygame.display.update()
@@ -409,6 +432,7 @@ def baseball():
 
         if TOTAL_TIME - START_TIME > 15000:
             DISPLAY = "out of time"
+            INCORRECT.play()
             START_TIME = TOTAL_TIME
             LIVES -= 1
 
@@ -443,12 +467,15 @@ def baseball():
         elif 15000 > TOTAL_TIME - START_TIME > 14000:
             disp_timer("1", RED)
 
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                CLICK.play()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if QUIT_BUT.checkForInput(MOUSE_POS):
+                    CLICK.play()
                     play_cat()
             if event.type == pygame.KEYDOWN:
                 char = pygame.key.name(event.key)
@@ -503,6 +530,7 @@ def baseball():
                             FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
+                            CORRECT.play()
                             USED_NAMES.append(CHECK_ANS)
 
                             NAME_BREAK_INDEX = CHECK_ANS.find(" ")
@@ -525,19 +553,22 @@ def baseball():
                         else:
                             PLAYER_INPUT = ""                        
                             DISPLAY = "incorrect"
+                            INCORRECT.play()
                             LIVES -= 1
                             
                     elif SCORE > 0 and len(PLAYER_INPUT) > 6:
                         if PLAYER_INPUT[:-6] in USED_NAMES:
                             PLAYER_INPUT = ""                        
                             DISPLAY = "dupe"
+                            INCORRECT.play()
                             LIVES -= 1
                         elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and MLB_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
 
                             CHECK_ANS = PLAYER_INPUT[:-6]
                             FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
-                            DISPLAY = "correct"  
+                            DISPLAY = "correct"
+                            CORRECT.play()  
                             USED_NAMES.append(CHECK_ANS)
 
                             NAME_BREAK_INDEX = CHECK_ANS.find(" ")
@@ -560,6 +591,7 @@ def baseball():
                             
                         else:
                             DISPLAY = "incorrect"
+                            INCORRECT.play()
                             PLAYER_INPUT = ""
                             LIVES -= 1
                     
@@ -664,14 +696,18 @@ def baseball():
 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
+                        CLICK.play()
                         pygame.quit()
                         sys.exit()
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if GAME_OVER_HOME.checkForInput(GAME_OVER_MOUSE_POS):
+                            CLICK.play()
                             main_menu()
                         if PLAY_AGAIN.checkForInput(GAME_OVER_MOUSE_POS):
+                            CLICK.play()
                             baseball()
                         if TWIT_BUT.checkForInput(GAME_OVER_MOUSE_POS):
+                            CLICK.play()
                             webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20MLB%20Baseball%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Fcbb-elo.com")     #
 
                     if event.type == pygame.KEYDOWN:
@@ -778,12 +814,15 @@ def football_rules():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                CLICK.play()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if RULES_BACK.checkForInput(RULES_MOUSE_POS):
+                    CLICK.play()
                     play_cat()
                 if RULES_PLAY.checkForInput(RULES_MOUSE_POS):
+                    CLICK.play()
                     football()
 
         pygame.display.update()
@@ -838,6 +877,7 @@ def football():
 
         if TOTAL_TIME - START_TIME > 15000:
             DISPLAY = "out of time"
+            INCORRECT.play()
             START_TIME = TOTAL_TIME
             LIVES -= 1
 
@@ -872,12 +912,15 @@ def football():
         elif 15000 > TOTAL_TIME - START_TIME > 14000:
             disp_timer("1", RED)
 
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                CLICK.play()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if QUIT_BUT.checkForInput(MOUSE_POS):
+                    CLICK.play()
                     play_cat()
             if event.type == pygame.KEYDOWN:
                 char = pygame.key.name(event.key)
@@ -933,6 +976,7 @@ def football():
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
                             USED_NAMES.append(CHECK_ANS)
+                            CORRECT.play()
 
                             NAME_BREAK_INDEX = CHECK_ANS.find(" ")
                             PLAY_LETTER_INDEX = NAME_BREAK_INDEX + 1
@@ -954,19 +998,22 @@ def football():
                         else:
                             PLAYER_INPUT = ""                        
                             DISPLAY = "incorrect"
+                            INCORRECT.play()
                             LIVES -= 1
                             
                     elif SCORE > 0 and len(PLAYER_INPUT) > 6:
                         if PLAYER_INPUT[:-6] in USED_NAMES:
                             PLAYER_INPUT = ""                        
                             DISPLAY = "dupe"
+                            INCORRECT.play()
                             LIVES -= 1
                         elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and NFL_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
 
                             CHECK_ANS = PLAYER_INPUT[:-6]
                             FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
-                            DISPLAY = "correct"  
+                            DISPLAY = "correct"
+                            CORRECT.play() 
                             USED_NAMES.append(CHECK_ANS)
 
                             NAME_BREAK_INDEX = CHECK_ANS.find(" ")
@@ -989,6 +1036,7 @@ def football():
                             
                         else:
                             DISPLAY = "incorrect"
+                            INCORRECT.play()
                             PLAYER_INPUT = ""
                             LIVES -= 1
                     
@@ -1093,14 +1141,18 @@ def football():
 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
+                        CLICK.play()
                         pygame.quit()
                         sys.exit()
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if GAME_OVER_HOME.checkForInput(GAME_OVER_MOUSE_POS):
+                            CLICK.play()
                             main_menu()
                         if PLAY_AGAIN.checkForInput(GAME_OVER_MOUSE_POS):
-                            baseball()
+                            CLICK.play()
+                            football()
                         if TWIT_BUT.checkForInput(GAME_OVER_MOUSE_POS):
+                            CLICK.play()
                             webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20NFL%20Football%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Fcbb-elo.com")
 
                     if event.type == pygame.KEYDOWN:
