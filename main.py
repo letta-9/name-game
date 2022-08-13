@@ -343,6 +343,7 @@ def contact():
 
         pygame.display.update()
 
+
 # Baseball Rules Page #
 
 def baseball_rules():
@@ -385,6 +386,7 @@ def baseball_rules():
                     baseball()
 
         pygame.display.update()
+
 
 # Baseball Page Game Loop #
 
@@ -481,60 +483,19 @@ def baseball():
                     CLICK.play()
                     play_cat()
             if event.type == pygame.KEYDOWN:
-                char = pygame.key.name(event.key)
-                PLAYER_INPUT += char
-                
-                if PLAYER_INPUT == "return":
-                    PLAYER_INPUT = ""
-                
                 if event.key == pygame.K_BACKSPACE:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]
-                if event.key == pygame.K_SPACE:
-                    PLAYER_INPUT = PLAYER_INPUT[:-5]
-                    PLAYER_INPUT += " "
-                if event.key == pygame.K_TAB:
-                    PLAYER_INPUT = PLAYER_INPUT[:-3]
-                if event.key == pygame.K_CAPSLOCK:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]                   
-                if event.key == pygame.K_RSHIFT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-11]
-                if event.key == pygame.K_LSHIFT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]
-                if event.key == pygame.K_RCTRL:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]  
-                if event.key == pygame.K_LCTRL:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]  
-                if event.key == pygame.K_RALT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]
-                if event.key == pygame.K_LALT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-8] 
-                if event.key == pygame.K_UP:
-                    PLAYER_INPUT = PLAYER_INPUT[:-2]
-                if event.key == pygame.K_DOWN:
-                    PLAYER_INPUT = PLAYER_INPUT[:-4]
-                if event.key == pygame.K_LEFT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-4]
-                if event.key == pygame.K_RIGHT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-5]
-                if event.key == pygame.K_RMETA:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]
-                if event.key == pygame.K_LMETA:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]
-                if event.key == pygame.K_NUMLOCK:
-                    PLAYER_INPUT = PLAYER_INPUT[:-7]
-                if event.key == pygame.K_KP_ENTER:
-                    PLAYER_INPUT = PLAYER_INPUT[:-5]
-                if event.key == pygame.K_RETURN:   
+                    PLAYER_INPUT = PLAYER_INPUT[:-1]
+                elif event.key == pygame.K_RETURN:   
                     START_TIME = TOTAL_TIME
 
-                    if SCORE == 0 and len(PLAYER_INPUT) > 6:
-                        if PLAYER_INPUT[:-6][0] == RANDOM_START and MLB_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
-                            CHECK_ANS = PLAYER_INPUT[:-6]
+                    if SCORE == 0 and len(PLAYER_INPUT) > 0:
+                        if PLAYER_INPUT[0] == RANDOM_START and MLB_LIST['name'].eq(PLAYER_INPUT).any():
+                            CHECK_ANS = PLAYER_INPUT
                             FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
-                            CORRECT.play()
                             USED_NAMES.append(CHECK_ANS)
+                            CORRECT.play()
 
                             NAME_BREAK_INDEX = CHECK_ANS.find(" ")
                             PLAY_LETTER_INDEX = NAME_BREAK_INDEX + 1
@@ -559,19 +520,19 @@ def baseball():
                             INCORRECT.play()
                             LIVES -= 1
                             
-                    elif SCORE > 0 and len(PLAYER_INPUT) > 6:
-                        if PLAYER_INPUT[:-6] in USED_NAMES:
+                    elif SCORE > 0 and len(PLAYER_INPUT) > 0:
+                        if PLAYER_INPUT in USED_NAMES:
                             PLAYER_INPUT = ""                        
                             DISPLAY = "dupe"
                             INCORRECT.play()
                             LIVES -= 1
-                        elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and MLB_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
+                        elif PLAYER_INPUT[0] == PLAY_LETTER and MLB_LIST['name'].eq(PLAYER_INPUT).any():
 
-                            CHECK_ANS = PLAYER_INPUT[:-6]
+                            CHECK_ANS = PLAYER_INPUT
                             FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
-                            CORRECT.play()  
+                            CORRECT.play() 
                             USED_NAMES.append(CHECK_ANS)
 
                             NAME_BREAK_INDEX = CHECK_ANS.find(" ")
@@ -597,6 +558,8 @@ def baseball():
                             INCORRECT.play()
                             PLAYER_INPUT = ""
                             LIVES -= 1
+                else:
+                    PLAYER_INPUT += event.unicode
                     
                         
                           
@@ -714,50 +677,9 @@ def baseball():
                             webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20MLB%20Baseball%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Fcbb-elo.com")     #
 
                     if event.type == pygame.KEYDOWN:
-                        char_int = pygame.key.name(event.key)
-                        INITIALS += char_int
-                                                
-                        if len(INITIALS) > 3:
-                            INITIALS = INITIALS[:3]
-                        
                         if event.key == pygame.K_BACKSPACE:
-                            INITIALS = INITIALS[:-10]
-                        if event.key == pygame.K_SPACE:
-                            INITIALS = INITIALS[:-5]
-                            INITIALS += " "
-                        if event.key == pygame.K_TAB:
-                            INITIALS = INITIALS[:-3]
-                        if event.key == pygame.K_CAPSLOCK:
-                            INITIALS = INITIALS[:-9]                   
-                        if event.key == pygame.K_RSHIFT:
-                            INITIALS = INITIALS[:-11]
-                        if event.key == pygame.K_LSHIFT:
-                            INITIALS = INITIALS[:-10]
-                        if event.key == pygame.K_RCTRL:
-                            INITIALS = INITIALS[:-10]  
-                        if event.key == pygame.K_LCTRL:
-                            INITIALS = INITIALS[:-9]  
-                        if event.key == pygame.K_RALT:
-                            INITIALS = INITIALS[:-9]
-                        if event.key == pygame.K_LALT:
-                            INITIALS = INITIALS[:-8] 
-                        if event.key == pygame.K_UP:
-                            INITIALS = INITIALS[:-2]
-                        if event.key == pygame.K_DOWN:
-                            INITIALS = INITIALS[:-4]
-                        if event.key == pygame.K_LEFT:
-                            INITIALS = INITIALS[:-4]
-                        if event.key == pygame.K_RIGHT:
-                            INITIALS = INITIALS[:-5]
-                        if event.key == pygame.K_RMETA:
-                            INITIALS = INITIALS[:-10]
-                        if event.key == pygame.K_LMETA:
-                            INITIALS = INITIALS[:-9]
-                        if event.key == pygame.K_NUMLOCK:
-                            INITIALS = INITIALS[:-7]
-                        if event.key == pygame.K_KP_ENTER:
-                            INITIALS = INITIALS[:-5]
-                        if event.key == pygame.K_RETURN:
+                            INITIALS = INITIALS[:-1]
+                        elif event.key == pygame.K_RETURN:
                             if SAVES == 0:
                                 #INITIALS = INITIALS[:-6]
 
@@ -769,12 +691,17 @@ def baseball():
                                                 }
                                 HIGHSCORE_DF = pd.DataFrame(SCORE_INIT)
                                 HIGHSCORE_DF = HIGHSCORE_DF.sort_values(by=['score'])
-                                HIGHSCORE_DF.to_csv('mlb_highscores.csv', mode='a', index=False, header=False)              #
+                                HIGHSCORE_DF.to_csv('mlb_highscores.csv', mode='a', index=False, header=False)
                                 INITIALS = ""
                             else:
                                 INITIALS = ""
                             
                             SAVES += 1
+                        else:
+                            INITIALS += event.unicode
+                            
+                        if len(INITIALS) > 3:
+                            INITIALS = INITIALS[:3]
                             
                         
                 disp_type(INITIALS, WHITE, 700, 510)
@@ -787,6 +714,7 @@ def baseball():
 
         pygame.display.update()
         
+
 # Football Rules Page
 
 def football_rules():
@@ -829,6 +757,7 @@ def football_rules():
                     football()
 
         pygame.display.update()
+
 
 # Football Game Loop #
 
@@ -926,55 +855,14 @@ def football():
                     CLICK.play()
                     play_cat()
             if event.type == pygame.KEYDOWN:
-                char = pygame.key.name(event.key)
-                PLAYER_INPUT += char
-                
-                if PLAYER_INPUT == "return":
-                    PLAYER_INPUT = ""
-                
                 if event.key == pygame.K_BACKSPACE:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]
-                if event.key == pygame.K_SPACE:
-                    PLAYER_INPUT = PLAYER_INPUT[:-5]
-                    PLAYER_INPUT += " "
-                if event.key == pygame.K_TAB:
-                    PLAYER_INPUT = PLAYER_INPUT[:-3]
-                if event.key == pygame.K_CAPSLOCK:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]                   
-                if event.key == pygame.K_RSHIFT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-11]
-                if event.key == pygame.K_LSHIFT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]
-                if event.key == pygame.K_RCTRL:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]  
-                if event.key == pygame.K_LCTRL:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]  
-                if event.key == pygame.K_RALT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]
-                if event.key == pygame.K_LALT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-8] 
-                if event.key == pygame.K_UP:
-                    PLAYER_INPUT = PLAYER_INPUT[:-2]
-                if event.key == pygame.K_DOWN:
-                    PLAYER_INPUT = PLAYER_INPUT[:-4]
-                if event.key == pygame.K_LEFT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-4]
-                if event.key == pygame.K_RIGHT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-5]
-                if event.key == pygame.K_RMETA:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]
-                if event.key == pygame.K_LMETA:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]
-                if event.key == pygame.K_NUMLOCK:
-                    PLAYER_INPUT = PLAYER_INPUT[:-7]
-                if event.key == pygame.K_KP_ENTER:
-                    PLAYER_INPUT = PLAYER_INPUT[:-5]
-                if event.key == pygame.K_RETURN:   
+                    PLAYER_INPUT = PLAYER_INPUT[:-1]
+                elif event.key == pygame.K_RETURN:   
                     START_TIME = TOTAL_TIME
 
-                    if SCORE == 0 and len(PLAYER_INPUT) > 6:
-                        if PLAYER_INPUT[:-6][0] == RANDOM_START and NFL_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
-                            CHECK_ANS = PLAYER_INPUT[:-6]
+                    if SCORE == 0 and len(PLAYER_INPUT) > 0:
+                        if PLAYER_INPUT[0] == RANDOM_START and NFL_LIST['name'].eq(PLAYER_INPUT).any():
+                            CHECK_ANS = PLAYER_INPUT
                             FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
@@ -1004,15 +892,15 @@ def football():
                             INCORRECT.play()
                             LIVES -= 1
                             
-                    elif SCORE > 0 and len(PLAYER_INPUT) > 6:
-                        if PLAYER_INPUT[:-6] in USED_NAMES:
+                    elif SCORE > 0 and len(PLAYER_INPUT) > 0:
+                        if PLAYER_INPUT in USED_NAMES:
                             PLAYER_INPUT = ""                        
                             DISPLAY = "dupe"
                             INCORRECT.play()
                             LIVES -= 1
-                        elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and NFL_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
+                        elif PLAYER_INPUT[0] == PLAY_LETTER and NFL_LIST['name'].eq(PLAYER_INPUT).any():
 
-                            CHECK_ANS = PLAYER_INPUT[:-6]
+                            CHECK_ANS = PLAYER_INPUT
                             FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
@@ -1042,6 +930,8 @@ def football():
                             INCORRECT.play()
                             PLAYER_INPUT = ""
                             LIVES -= 1
+                else:
+                    PLAYER_INPUT += event.unicode
                     
                         
                           
@@ -1159,50 +1049,9 @@ def football():
                             webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20NFL%20Football%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Fcbb-elo.com")
 
                     if event.type == pygame.KEYDOWN:
-                        char_int = pygame.key.name(event.key)
-                        INITIALS += char_int
-                                                
-                        if len(INITIALS) > 3:
-                            INITIALS = INITIALS[:3]
-                        
                         if event.key == pygame.K_BACKSPACE:
-                            INITIALS = INITIALS[:-10]
-                        if event.key == pygame.K_SPACE:
-                            INITIALS = INITIALS[:-5]
-                            INITIALS += " "
-                        if event.key == pygame.K_TAB:
-                            INITIALS = INITIALS[:-3]
-                        if event.key == pygame.K_CAPSLOCK:
-                            INITIALS = INITIALS[:-9]                   
-                        if event.key == pygame.K_RSHIFT:
-                            INITIALS = INITIALS[:-11]
-                        if event.key == pygame.K_LSHIFT:
-                            INITIALS = INITIALS[:-10]
-                        if event.key == pygame.K_RCTRL:
-                            INITIALS = INITIALS[:-10]  
-                        if event.key == pygame.K_LCTRL:
-                            INITIALS = INITIALS[:-9]  
-                        if event.key == pygame.K_RALT:
-                            INITIALS = INITIALS[:-9]
-                        if event.key == pygame.K_LALT:
-                            INITIALS = INITIALS[:-8] 
-                        if event.key == pygame.K_UP:
-                            INITIALS = INITIALS[:-2]
-                        if event.key == pygame.K_DOWN:
-                            INITIALS = INITIALS[:-4]
-                        if event.key == pygame.K_LEFT:
-                            INITIALS = INITIALS[:-4]
-                        if event.key == pygame.K_RIGHT:
-                            INITIALS = INITIALS[:-5]
-                        if event.key == pygame.K_RMETA:
-                            INITIALS = INITIALS[:-10]
-                        if event.key == pygame.K_LMETA:
-                            INITIALS = INITIALS[:-9]
-                        if event.key == pygame.K_NUMLOCK:
-                            INITIALS = INITIALS[:-7]
-                        if event.key == pygame.K_KP_ENTER:
-                            INITIALS = INITIALS[:-5]
-                        if event.key == pygame.K_RETURN:
+                            INITIALS = INITIALS[:-1]
+                        elif event.key == pygame.K_RETURN:
                             if SAVES == 0:
                                 #INITIALS = INITIALS[:-6]
 
@@ -1220,6 +1069,11 @@ def football():
                                 INITIALS = ""
                             
                             SAVES += 1
+                        else:
+                            INITIALS += event.unicode
+                            
+                        if len(INITIALS) > 3:
+                            INITIALS = INITIALS[:3]
                             
                         
                 disp_type(INITIALS, WHITE, 700, 510)
@@ -1232,6 +1086,7 @@ def football():
 
         pygame.display.update()
 
+# Basketball Rules #
 
 def basketball_rules():
     while True:
@@ -1368,55 +1223,14 @@ def basketball():
                     CLICK.play()
                     play_cat()
             if event.type == pygame.KEYDOWN:
-                char = pygame.key.name(event.key)
-                PLAYER_INPUT += char
-                
-                if PLAYER_INPUT == "return":
-                    PLAYER_INPUT = ""
-                
                 if event.key == pygame.K_BACKSPACE:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]
-                if event.key == pygame.K_SPACE:
-                    PLAYER_INPUT = PLAYER_INPUT[:-5]
-                    PLAYER_INPUT += " "
-                if event.key == pygame.K_TAB:
-                    PLAYER_INPUT = PLAYER_INPUT[:-3]
-                if event.key == pygame.K_CAPSLOCK:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]                   
-                if event.key == pygame.K_RSHIFT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-11]
-                if event.key == pygame.K_LSHIFT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]
-                if event.key == pygame.K_RCTRL:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]  
-                if event.key == pygame.K_LCTRL:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]  
-                if event.key == pygame.K_RALT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]
-                if event.key == pygame.K_LALT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-8] 
-                if event.key == pygame.K_UP:
-                    PLAYER_INPUT = PLAYER_INPUT[:-2]
-                if event.key == pygame.K_DOWN:
-                    PLAYER_INPUT = PLAYER_INPUT[:-4]
-                if event.key == pygame.K_LEFT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-4]
-                if event.key == pygame.K_RIGHT:
-                    PLAYER_INPUT = PLAYER_INPUT[:-5]
-                if event.key == pygame.K_RMETA:
-                    PLAYER_INPUT = PLAYER_INPUT[:-10]
-                if event.key == pygame.K_LMETA:
-                    PLAYER_INPUT = PLAYER_INPUT[:-9]
-                if event.key == pygame.K_NUMLOCK:
-                    PLAYER_INPUT = PLAYER_INPUT[:-7]
-                if event.key == pygame.K_KP_ENTER:
-                    PLAYER_INPUT = PLAYER_INPUT[:-5]
-                if event.key == pygame.K_RETURN:   
+                    PLAYER_INPUT = PLAYER_INPUT[:-1]
+                elif event.key == pygame.K_RETURN:   
                     START_TIME = TOTAL_TIME
 
-                    if SCORE == 0 and len(PLAYER_INPUT) > 6:
-                        if PLAYER_INPUT[:-6][0] == RANDOM_START and NBA_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
-                            CHECK_ANS = PLAYER_INPUT[:-6]
+                    if SCORE == 0 and len(PLAYER_INPUT) > 0:
+                        if PLAYER_INPUT[0] == RANDOM_START and NBA_LIST['name'].eq(PLAYER_INPUT).any():
+                            CHECK_ANS = PLAYER_INPUT
                             FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
@@ -1446,15 +1260,15 @@ def basketball():
                             INCORRECT.play()
                             LIVES -= 1
                             
-                    elif SCORE > 0 and len(PLAYER_INPUT) > 6:
-                        if PLAYER_INPUT[:-6] in USED_NAMES:
+                    elif SCORE > 0 and len(PLAYER_INPUT) > 0:
+                        if PLAYER_INPUT in USED_NAMES:
                             PLAYER_INPUT = ""                        
                             DISPLAY = "dupe"
                             INCORRECT.play()
                             LIVES -= 1
-                        elif PLAYER_INPUT[:-6][0] == PLAY_LETTER and NBA_LIST['name'].eq(PLAYER_INPUT[:-6]).any():
+                        elif PLAYER_INPUT[0] == PLAY_LETTER and NBA_LIST['name'].eq(PLAYER_INPUT).any():
 
-                            CHECK_ANS = PLAYER_INPUT[:-6]
+                            CHECK_ANS = PLAYER_INPUT
                             FIRST_LETTER = PLAYER_INPUT[0]
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
@@ -1484,6 +1298,8 @@ def basketball():
                             INCORRECT.play()
                             PLAYER_INPUT = ""
                             LIVES -= 1
+                else:
+                    PLAYER_INPUT += event.unicode
                     
                         
                           
@@ -1595,56 +1411,15 @@ def basketball():
                             main_menu()
                         if PLAY_AGAIN.checkForInput(GAME_OVER_MOUSE_POS):
                             CLICK.play()
-                            football()
+                            basketball()
                         if TWIT_BUT.checkForInput(GAME_OVER_MOUSE_POS):
                             CLICK.play()
                             webbrowser.open(f"https://twitter.com/intent/tweet?text=I%20Named%20{TURNS}%20NBA%20Basketball%20Players%20For%20{SCORE}%20Points%20via%20the%20NAME%20GAME%20%3A&url=http%3A%2F%2Fcbb-elo.com")
 
                     if event.type == pygame.KEYDOWN:
-                        char_int = pygame.key.name(event.key)
-                        INITIALS += char_int
-                                                
-                        if len(INITIALS) > 3:
-                            INITIALS = INITIALS[:3]
-                        
                         if event.key == pygame.K_BACKSPACE:
-                            INITIALS = INITIALS[:-10]
-                        if event.key == pygame.K_SPACE:
-                            INITIALS = INITIALS[:-5]
-                            INITIALS += " "
-                        if event.key == pygame.K_TAB:
-                            INITIALS = INITIALS[:-3]
-                        if event.key == pygame.K_CAPSLOCK:
-                            INITIALS = INITIALS[:-9]                   
-                        if event.key == pygame.K_RSHIFT:
-                            INITIALS = INITIALS[:-11]
-                        if event.key == pygame.K_LSHIFT:
-                            INITIALS = INITIALS[:-10]
-                        if event.key == pygame.K_RCTRL:
-                            INITIALS = INITIALS[:-10]  
-                        if event.key == pygame.K_LCTRL:
-                            INITIALS = INITIALS[:-9]  
-                        if event.key == pygame.K_RALT:
-                            INITIALS = INITIALS[:-9]
-                        if event.key == pygame.K_LALT:
-                            INITIALS = INITIALS[:-8] 
-                        if event.key == pygame.K_UP:
-                            INITIALS = INITIALS[:-2]
-                        if event.key == pygame.K_DOWN:
-                            INITIALS = INITIALS[:-4]
-                        if event.key == pygame.K_LEFT:
-                            INITIALS = INITIALS[:-4]
-                        if event.key == pygame.K_RIGHT:
-                            INITIALS = INITIALS[:-5]
-                        if event.key == pygame.K_RMETA:
-                            INITIALS = INITIALS[:-10]
-                        if event.key == pygame.K_LMETA:
-                            INITIALS = INITIALS[:-9]
-                        if event.key == pygame.K_NUMLOCK:
-                            INITIALS = INITIALS[:-7]
-                        if event.key == pygame.K_KP_ENTER:
-                            INITIALS = INITIALS[:-5]
-                        if event.key == pygame.K_RETURN:
+                            INITIALS = INITIALS[:-1]
+                        elif event.key == pygame.K_RETURN:
                             if SAVES == 0:
                                 #INITIALS = INITIALS[:-6]
 
@@ -1662,6 +1437,11 @@ def basketball():
                                 INITIALS = ""
                             
                             SAVES += 1
+                        else:
+                            INITIALS += event.unicode
+                            
+                        if len(INITIALS) > 3:
+                            INITIALS = INITIALS[:3]
                             
                         
                 disp_type(INITIALS, WHITE, 700, 510)
