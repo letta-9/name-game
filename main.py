@@ -144,7 +144,7 @@ def hide_hearts(x, y, l, h):
 def disp_streak(streak):
     streak = str(streak)
     TEXT = press_start_font(20).render("DOUBLE STREAK x" + streak, True, GREEN)
-    TEXT_RECT = TEXT.get_rect(center=(160, 400))
+    TEXT_RECT = TEXT.get_rect(center=(170, 400))
     SCREEN.blit(TEXT, TEXT_RECT)
 
 # Display Leaderboard #
@@ -401,7 +401,7 @@ def baseball():
     CHECK_ANS = ""
     SCORE = 0
     LIVES = 3
-    ALPHABET = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
+    ALPHABET = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "v", "w", "x", "y", "z"] # q and u eliminated
     RANDOM_START = random.choice(ALPHABET)
     USED_NAMES = []
     DISPLAY = ""
@@ -490,13 +490,17 @@ def baseball():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     PLAYER_INPUT = PLAYER_INPUT[:-1]
+                elif event.key == pygame.K_TAB:
+                    PLAYER_INPUT = PLAYER_INPUT
+                elif event.key == pygame.K_DELETE:
+                    PLAYER_INPUT = PLAYER_INPUT
                 elif event.key == pygame.K_RETURN:   
                     START_TIME = TOTAL_TIME
 
                     if SCORE == 0 and len(PLAYER_INPUT) > 0:
-                        if PLAYER_INPUT[0] == RANDOM_START and MLB_LIST['name'].eq(PLAYER_INPUT).any():
-                            CHECK_ANS = PLAYER_INPUT
-                            FIRST_LETTER = PLAYER_INPUT[0]
+                        if PLAYER_INPUT[0].lower() == RANDOM_START:
+                            CHECK_ANS = PLAYER_INPUT.lower()
+                            FIRST_LETTER = PLAYER_INPUT[0].lower()
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
                             USED_NAMES.append(CHECK_ANS)
@@ -531,10 +535,10 @@ def baseball():
                             DISPLAY = "dupe"
                             INCORRECT.play()
                             LIVES -= 1
-                        elif PLAYER_INPUT[0] == PLAY_LETTER and MLB_LIST['name'].eq(PLAYER_INPUT).any():
+                        elif PLAYER_INPUT[0].lower() == PLAY_LETTER and MLB_LIST['name'].eq(PLAYER_INPUT.lower()).any():
 
-                            CHECK_ANS = PLAYER_INPUT
-                            FIRST_LETTER = PLAYER_INPUT[0]
+                            CHECK_ANS = PLAYER_INPUT.lower()
+                            FIRST_LETTER = PLAYER_INPUT[0].lower()
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
                             CORRECT.play() 
@@ -862,13 +866,17 @@ def football():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     PLAYER_INPUT = PLAYER_INPUT[:-1]
+                elif event.key == pygame.K_TAB:
+                    PLAYER_INPUT = PLAYER_INPUT
+                elif event.key == pygame.K_DELETE:
+                    PLAYER_INPUT = PLAYER_INPUT
                 elif event.key == pygame.K_RETURN:   
                     START_TIME = TOTAL_TIME
 
                     if SCORE == 0 and len(PLAYER_INPUT) > 0:
-                        if PLAYER_INPUT[0] == RANDOM_START and NFL_LIST['name'].eq(PLAYER_INPUT).any():
-                            CHECK_ANS = PLAYER_INPUT
-                            FIRST_LETTER = PLAYER_INPUT[0]
+                        if PLAYER_INPUT[0].lower() == RANDOM_START:
+                            CHECK_ANS = PLAYER_INPUT.lower()
+                            FIRST_LETTER = PLAYER_INPUT[0].lower()
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
                             USED_NAMES.append(CHECK_ANS)
@@ -903,10 +911,10 @@ def football():
                             DISPLAY = "dupe"
                             INCORRECT.play()
                             LIVES -= 1
-                        elif PLAYER_INPUT[0] == PLAY_LETTER and NFL_LIST['name'].eq(PLAYER_INPUT).any():
+                        elif PLAYER_INPUT[0].lower() == PLAY_LETTER and NFL_LIST['name'].eq(PLAYER_INPUT.lower()).any():
 
-                            CHECK_ANS = PLAYER_INPUT
-                            FIRST_LETTER = PLAYER_INPUT[0]
+                            CHECK_ANS = PLAYER_INPUT.lower()
+                            FIRST_LETTER = PLAYER_INPUT[0].lower()
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
                             CORRECT.play() 
@@ -1143,7 +1151,7 @@ def basketball():
     CHECK_ANS = ""
     SCORE = 0
     LIVES = 3
-    ALPHABET = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
+    ALPHABET = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "v", "w", "x", "z"] # y eliminated
     RANDOM_START = random.choice(ALPHABET)
     USED_NAMES = []
     DISPLAY = ""
@@ -1232,13 +1240,17 @@ def basketball():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     PLAYER_INPUT = PLAYER_INPUT[:-1]
+                elif event.key == pygame.K_TAB:
+                    PLAYER_INPUT = PLAYER_INPUT
+                elif event.key == pygame.K_DELETE:
+                    PLAYER_INPUT = PLAYER_INPUT
                 elif event.key == pygame.K_RETURN:   
                     START_TIME = TOTAL_TIME
 
                     if SCORE == 0 and len(PLAYER_INPUT) > 0:
-                        if PLAYER_INPUT[0] == RANDOM_START and NBA_LIST['name'].eq(PLAYER_INPUT).any():
-                            CHECK_ANS = PLAYER_INPUT
-                            FIRST_LETTER = PLAYER_INPUT[0]
+                        if PLAYER_INPUT[0].lower() == RANDOM_START:
+                            CHECK_ANS = PLAYER_INPUT.lower()
+                            FIRST_LETTER = PLAYER_INPUT[0].lower()
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
                             USED_NAMES.append(CHECK_ANS)
@@ -1273,10 +1285,10 @@ def basketball():
                             DISPLAY = "dupe"
                             INCORRECT.play()
                             LIVES -= 1
-                        elif PLAYER_INPUT[0] == PLAY_LETTER and NBA_LIST['name'].eq(PLAYER_INPUT).any():
+                        elif PLAYER_INPUT[0].lower() == PLAY_LETTER and NBA_LIST['name'].eq(PLAYER_INPUT.lower()).any():
 
-                            CHECK_ANS = PLAYER_INPUT
-                            FIRST_LETTER = PLAYER_INPUT[0]
+                            CHECK_ANS = PLAYER_INPUT.lower()
+                            FIRST_LETTER = PLAYER_INPUT[0].lower()
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
                             CORRECT.play() 
@@ -1601,13 +1613,17 @@ def hockey():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     PLAYER_INPUT = PLAYER_INPUT[:-1]
+                elif event.key == pygame.K_TAB:
+                    PLAYER_INPUT = PLAYER_INPUT
+                elif event.key == pygame.K_DELETE:
+                    PLAYER_INPUT = PLAYER_INPUT
                 elif event.key == pygame.K_RETURN:   
                     START_TIME = TOTAL_TIME
 
                     if SCORE == 0 and len(PLAYER_INPUT) > 0:
-                        if PLAYER_INPUT[0] == RANDOM_START and NHL_LIST['name'].eq(PLAYER_INPUT).any():
-                            CHECK_ANS = PLAYER_INPUT
-                            FIRST_LETTER = PLAYER_INPUT[0]
+                        if PLAYER_INPUT[0].lower() == RANDOM_START:
+                            CHECK_ANS = PLAYER_INPUT.lower()
+                            FIRST_LETTER = PLAYER_INPUT[0].lower()
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
                             USED_NAMES.append(CHECK_ANS)
@@ -1642,10 +1658,10 @@ def hockey():
                             DISPLAY = "dupe"
                             INCORRECT.play()
                             LIVES -= 1
-                        elif PLAYER_INPUT[0] == PLAY_LETTER and NHL_LIST['name'].eq(PLAYER_INPUT).any():
+                        elif PLAYER_INPUT[0].lower() == PLAY_LETTER and NHL_LIST['name'].eq(PLAYER_INPUT.lower()).any():
 
-                            CHECK_ANS = PLAYER_INPUT
-                            FIRST_LETTER = PLAYER_INPUT[0]
+                            CHECK_ANS = PLAYER_INPUT.lower()
+                            FIRST_LETTER = PLAYER_INPUT[0].lower()
                             PLAYER_INPUT = ""
                             DISPLAY = "correct"
                             CORRECT.play() 
